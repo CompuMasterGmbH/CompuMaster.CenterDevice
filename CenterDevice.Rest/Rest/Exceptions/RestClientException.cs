@@ -24,6 +24,15 @@ namespace CenterDevice.Rest.Exceptions
 
         }
 
+        public RestClientException(string message, Exception innerException, string resultHeaders, string resultBody) : base(message, innerException)
+        {
+            this.ResultBody = resultBody;
+            this.ResultHeaders = resultHeaders;
+        }
+
+        public string ResultHeaders { get; set; }
+        public string ResultBody { get; set; }
+
         public RestClientException(string message, Exception innerException, DefaultErrorResponse defaultErrorResponse) : base(message, innerException)
         {
             ErrorResponse = defaultErrorResponse;

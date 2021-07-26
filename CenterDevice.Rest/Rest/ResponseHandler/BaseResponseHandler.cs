@@ -24,8 +24,25 @@ namespace CenterDevice.Rest.ResponseHandler
                     throw new InvalidResponseDataException(result.ErrorMessage, result.ErrorException);
                 }
 
-                throw new RestClientException(result.ErrorMessage, result.ErrorException);
+                logger.ErrorFormat("Serialization exception caught. Status code {0}, Content type {1}, Content {2}", result.StatusCode, result.ContentType, result.Content);
+                throw new RestClientException(result.ErrorMessage, result.ErrorException, HeadersToString(result.Headers), result.Content);
             }
+        }
+
+        private static string HeadersToString(IList<Parameter> headers)
+        {
+            string Result = null;
+            foreach (Parameter p in headers)
+            {
+                Result = p.Name + ": " + p.Value + System.Environment.NewLine;
+                /*
+                if (Result == null)
+                    Result = p.Name + ": " + p.Value;
+                else
+                    Result = System.Environment.NewLine + p.Name + ": " + p.Value;
+                */
+            }
+            return Result;
         }
 
         protected static RestClientException CreateDefaultException(HttpStatusCode expected, IRestResponse result)

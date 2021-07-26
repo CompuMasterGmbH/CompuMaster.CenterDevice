@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp3.1;net5.0;net48</TargetFrameworks>
     <AssemblyName>CompuMaster.CenterDevice.Rest</AssemblyName>
-    <Version>2021.07.20.100</Version>
+    <Version>2021.07.26.100</Version>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/CompuMasterGmbH/CompuMaster.CenterDevice.IO</PackageProjectUrl>
     <Copyright>Copyright © 2017-2021 CenterDevice GmbH, Bonn/Germany and CompuMaster GmbH, Emmelshausen/Germany</Copyright>
@@ -46,7 +46,7 @@
     <DocumentationFile>bin\Release\CompuMaster.CenterDevice.Rest.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="..\logo_64x64.png">
+    <None Include="logo_64x64.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
@@ -56,8 +56,5 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Ninject" Version="3.3.4.0" />
     <PackageReference Include="RestSharp" Version="106.12.0" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-	<PackageReference Include="RestSharp" Version="105.2.3" />
   </ItemGroup>
 </Project>

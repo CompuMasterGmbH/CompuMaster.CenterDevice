@@ -45,8 +45,14 @@ namespace CenterDevice.Rest.Clients
             this.ApiVersionPrefix = apiVersionPrefix;
             client = new RestClient(configuration.BaseAddress)
             {
-                UserAgent = configuration.UserAgent
+                UserAgent = configuration.UserAgent,
             };
+            //remove all XML deserializers since response is always expected as JSON, never XML
+            client.RemoveHandler("");
+            client.RemoveHandler("*"); //remove default handler which is XML instead of JSON!
+            client.RemoveHandler("application/xml");
+            client.RemoveHandler("text/xml");
+            client.RemoveHandler("text/javascript");
         }
 
         protected string GetBaseAddress()
@@ -199,7 +205,9 @@ namespace CenterDevice.Rest.Clients
 
         protected RestRequest CreateRestRequest(string path, Method method)
         {
-            return new RestRequest(path, method);
+            RestRequest Result = new RestRequest(path, method);
+            Result.RequestFormat = DataFormat.Json;
+            return Result;
         }
 
         protected OAuthInfo GetOAuthInfo(string userId)

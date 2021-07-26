@@ -16,6 +16,11 @@ namespace CenterDevice.Rest.Clients
     /// </summary>
     public abstract class CenterDeviceClientBase
     {
+        /// <summary>
+        /// Version of the CenterDevice client
+        /// </summary>
+        public static readonly Version Version = new System.Reflection.AssemblyName(typeof(CenterDeviceClientBase).Assembly.FullName).Version;
+
         internal protected readonly IRestClientConfiguration configuration;
         internal protected readonly IOAuthInfoProvider oAuthInfoProvider;
         internal protected readonly IRestClientErrorHandler errorHandler;
