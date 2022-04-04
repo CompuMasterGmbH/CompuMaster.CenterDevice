@@ -27,19 +27,19 @@ namespace CenterDevice.Rest.Clients.OAuth
             Client.UserAgent = configuration.UserAgent;
         }
 
-        public IRestResponse<OAuthInfo> SwapToken(OAuthInfo oAuthInfo, string userId)
+        public RestResponse<OAuthInfo> SwapToken(OAuthInfo oAuthInfo, string userId)
         {
             return SwapToken(BuildSwapTokenBodyMessageForUserId(oAuthInfo.access_token, userId));
         }
 
-        public IRestResponse<OAuthInfo> SwapToken(OAuthInfo oAuthInfo, string email, string tenantId)
+        public RestResponse<OAuthInfo> SwapToken(OAuthInfo oAuthInfo, string email, string tenantId)
         {
             return SwapToken(BuildSwapTokenBodyMessageForEmailAndTenantId(oAuthInfo.access_token, email, tenantId));
         }
 
-        public IRestResponse<OAuthInfo> RefreshToken(OAuthInfo oAuthInfo)
+        public RestResponse<OAuthInfo> RefreshToken(OAuthInfo oAuthInfo)
         {
-            var request = new RestRequest(TOKEN_ENDPOINT, Method.POST);
+            var request = new RestRequest(TOKEN_ENDPOINT, Method.Post);
             AddAuthHeader(request);
 
             request.AddParameter(
@@ -50,10 +50,10 @@ namespace CenterDevice.Rest.Clients.OAuth
             return Client.Execute<OAuthInfo>(request);
         }
 
-        public IRestResponse<OAuthInfo> DestroyToken(OAuthInfo oAuthInfo)
+        public RestResponse<OAuthInfo> DestroyToken(OAuthInfo oAuthInfo)
         {
 
-            var request = new RestRequest(TOKEN_ENDPOINT, Method.POST);
+            var request = new RestRequest(TOKEN_ENDPOINT, Method.Post);
             AddAuthHeader(request);
 
             request.AddParameter(
@@ -64,10 +64,10 @@ namespace CenterDevice.Rest.Clients.OAuth
             return Client.Execute<OAuthInfo>(request);
         }
 
-        private IRestResponse<OAuthInfo> SwapToken(string body)
+        private RestResponse<OAuthInfo> SwapToken(string body)
         {
 
-            var request = new RestRequest(TOKEN_ENDPOINT, Method.POST);
+            var request = new RestRequest(TOKEN_ENDPOINT, Method.Post);
             AddAuthHeader(request);
 
             request.AddParameter(ContentType.APPLICATION_FORM_URLENCODED, body, ParameterType.RequestBody);

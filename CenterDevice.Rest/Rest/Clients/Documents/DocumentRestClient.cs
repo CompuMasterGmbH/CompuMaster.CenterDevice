@@ -49,7 +49,7 @@ namespace CenterDevice.Rest.Clients.Documents
                 path += ";" + RestApiConstants.VERSION + "=" + version;
             }
 
-            var metadataRequest = CreateRestRequest(path, Method.GET, ContentType.APPLICATION_JSON);
+            var metadataRequest = CreateRestRequest(path, Method.Get, ContentType.APPLICATION_JSON);
             metadataRequest.AddQueryParameter(RestApiConstants.INCLUDES, FieldUtils.GetFieldIncludes(typeof(T)));
 
             var result = Execute<T>(GetOAuthInfo(userId), metadataRequest);
@@ -185,7 +185,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public NewVersionUploadResponse UploadNewVersion(string userId, string id, string filename, string filepath, CancellationToken token)
         {
-            RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.MULTIPART_FORM_DATA);
+            RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.MULTIPART_FORM_DATA);
             newVersionRequest.AlwaysMultipartFormData = true;
             newVersionRequest.AddParameter(GenerateFormParameter("metadata", GetMetadata(filename, filepath), ContentType.APPLICATION_JSON));
             DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", filepath, streamWrapper, token);
@@ -213,7 +213,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public NewVersionUploadResponse RenameDocument(string userId, string id, string filename)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.RENAME, @params = new { filename = filename } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -222,7 +222,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public void AddLock(string userId, string id)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.ADD_LOCK, @params = new { locks = new string[] { RestApiConstants.CREATE_NEW_VERSION } } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -231,7 +231,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public void RemoveLock(string userId, string id)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.REMOVE_LOCK, @params = new { locks = new string[] { RestApiConstants.CREATE_NEW_VERSION } } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -250,7 +250,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public DeleteDocumentsResponse DeleteDocument(string userId, string documentId)
         {
-            RestRequest delete = CreateRestRequest(URI_RESOURCE + documentId, Method.DELETE, ContentType.APPLICATION_JSON);
+            RestRequest delete = CreateRestRequest(URI_RESOURCE + documentId, Method.Delete, ContentType.APPLICATION_JSON);
 
             var result = Execute<DeleteDocumentsResponse>(GetOAuthInfo(userId), delete);
             return UnwrapResponse(result, new StatusCodeResponseHandler<DeleteDocumentsResponse>(new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.NoContent }));

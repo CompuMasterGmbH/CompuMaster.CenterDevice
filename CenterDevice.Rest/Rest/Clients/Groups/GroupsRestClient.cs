@@ -35,7 +35,7 @@ namespace CenterDevice.Rest.Clients.Groups
                 default:
                     throw new ArgumentException("Invalid filter", nameof(filter));
             }
-            var request = CreateRestRequest(URI_RESOURCE + filterExpression, Method.GET, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + filterExpression, Method.Get, ContentType.APPLICATION_JSON);
 
             var result = Execute<GroupList>(GetOAuthInfo(userId), request);
             if (result.StatusCode == HttpStatusCode.NoContent)

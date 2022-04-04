@@ -42,7 +42,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public FoldersResponse GetFolders(string userId, string collectionId, string folderId, string documentId, string path, IEnumerable<string> ids, bool onlySharedFolders, bool onlyTopMost, string[] fields)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
             if (collectionId != null)
             {
                 folderRequest.AddQueryParameter(RestApiConstants.COLLECTION, collectionId);
@@ -84,7 +84,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public FolderCreationResponse CreateFolder(string userId, string name, string collection, string parent)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
             if (string.IsNullOrWhiteSpace(parent) || parent == RestApiConstants.NONE)
             {
                 folderRequest.AddJsonBody(new { name = name, parent = RestApiConstants.NONE, collection = collection });

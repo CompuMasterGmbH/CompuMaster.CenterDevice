@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.Clients.Common
     {
         public List<string> Visible { get; set; }
 
-        [DeserializeAs(Name = "not-visible-count")]
+        [JsonPropertyName("not-visible-count")]
         public int NotVisibleCount { get; set; }
 
         public bool HasSharing

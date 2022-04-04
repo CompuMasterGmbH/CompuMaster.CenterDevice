@@ -24,7 +24,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public TenantSettings GetTenantSettings(string userId, string tenantId)
         {
-            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.GET, ContentType.APPLICATION_JSON);
+            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Get, ContentType.APPLICATION_JSON);
 
             var response = Execute<TenantSettings>(GetOAuthInfo(userId), tenantRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<TenantSettings>(HttpStatusCode.OK));
@@ -32,7 +32,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public void UpdateTenantSettings(string userId, string tenantId, string settingName, IEnumerable<string> users, IEnumerable<string> roles)
         {
-            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.PUT, ContentType.APPLICATION_JSON);
+            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Put, ContentType.APPLICATION_JSON);
 
             JObject parameter = new JObject();
             if (users != null)

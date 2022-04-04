@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.Clients.Documents
     {
         public string Id { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.UPLOAD_ACTIONS)]
+        [JsonPropertyName(RestApiConstants.UPLOAD_ACTIONS)]
         public UploadActions UploadActions { get; set; }
 
         // Duplicates are not handled since we don't use 
@@ -24,7 +24,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
     public class UploadActions
     {
-        [DeserializeAs(Name = RestApiConstants.ADD_TO_FOLDER)]
+        [JsonPropertyName(RestApiConstants.ADD_TO_FOLDER)]
         public AddToFolder AddToFolder { get; set; }
 
         public bool HasAddToFolder { get { return AddToFolder != null; } }

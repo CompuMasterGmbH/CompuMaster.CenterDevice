@@ -21,7 +21,7 @@ namespace CenterDevice.Rest.Clients.User
 
         public ExtendedUserData GetLoggedInUserData(OAuthInfo oAuthInfo)
         {
-            var currentUserRequest = CreateRestRequest(URI_RESOURCE + "/current", Method.GET, ContentType.APPLICATION_JSON);
+            var currentUserRequest = CreateRestRequest(URI_RESOURCE + "/current", Method.Get, ContentType.APPLICATION_JSON);
 
             var response = Execute<ExtendedUserData>(oAuthInfo, currentUserRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<ExtendedUserData>(HttpStatusCode.OK));
@@ -29,7 +29,7 @@ namespace CenterDevice.Rest.Clients.User
 
         public BaseUserData GetUserData(string userId, string userIdToRequest)
         {
-            var currentUserRequest = CreateRestRequest(URI_RESOURCE + "/" + userIdToRequest, Method.GET, ContentType.APPLICATION_JSON);
+            var currentUserRequest = CreateRestRequest(URI_RESOURCE + "/" + userIdToRequest, Method.Get, ContentType.APPLICATION_JSON);
 
             var response = Execute<BaseUserData>(GetOAuthInfo(userId), currentUserRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<BaseUserData>(HttpStatusCode.OK));
@@ -37,7 +37,7 @@ namespace CenterDevice.Rest.Clients.User
 
         public FullUserData GetUserDataField(string userId, string userIdToRequest, string field)
         {
-            var request = CreateRestRequest(URI_RESOURCE + "/" + userIdToRequest, Method.GET, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + userIdToRequest, Method.Get, ContentType.APPLICATION_JSON);
             request.AddQueryParameter(RestApiConstants.FIELDS, field);
 
             var response = Execute<FullUserData>(GetOAuthInfo(userId), request);

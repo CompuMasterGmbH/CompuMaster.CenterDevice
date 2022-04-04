@@ -20,7 +20,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public TenantResponse GetTenants(OAuthInfo oAuthInfo)
         {
-            var tenantsRequest = CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON);
+            var tenantsRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
 
             var response = Execute<TenantResponse>(oAuthInfo, tenantsRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<TenantResponse>(HttpStatusCode.OK));

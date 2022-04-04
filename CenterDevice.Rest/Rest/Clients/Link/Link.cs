@@ -1,32 +1,32 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Link
 {
     public class Link
     {
-        [DeserializeAs(Name = RestApiConstants.WEB)]
+        [JsonPropertyName(RestApiConstants.WEB)]
         public string Web { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.DOWNLOAD)]
+        [JsonPropertyName(RestApiConstants.DOWNLOAD)]
         public string Download { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.ID)]
+        [JsonPropertyName(RestApiConstants.ID)]
         public string Id { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.REST)]
+        [JsonPropertyName(RestApiConstants.REST)]
         public string Rest { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.ACCESS_CONTROL)]
+        [JsonPropertyName(RestApiConstants.ACCESS_CONTROL)]
         public LinkAccessControl AccessControl { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.ACCESS_CONTROL)]
+        [JsonPropertyName(RestApiConstants.ACCESS_CONTROL)]
         public string Collection { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.VIEWS)]
+        [JsonPropertyName(RestApiConstants.VIEWS)]
         public System.Int64 Views { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.DOWNLOADS)]
+        [JsonPropertyName(RestApiConstants.DOWNLOADS)]
         public System.Int64 Downloads { get; set; }
     }
 }

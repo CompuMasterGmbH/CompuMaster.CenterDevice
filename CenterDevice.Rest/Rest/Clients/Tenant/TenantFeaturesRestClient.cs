@@ -23,7 +23,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public TenantFeatures GetTenantFeatures(string userId, string tenantId)
         {
-            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.GET, ContentType.APPLICATION_JSON);
+            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Get, ContentType.APPLICATION_JSON);
 
             var response = Execute<TenantFeatures>(GetOAuthInfo(userId), tenantRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<TenantFeatures>(HttpStatusCode.OK));
@@ -31,7 +31,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public void EnableTenantFeature(string userId, string tenantId, string feature)
         {
-            var request = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Post, ContentType.APPLICATION_JSON);
 
             var parameters = new JObject
             {
@@ -43,7 +43,7 @@ namespace CenterDevice.Rest.Clients.Tenant
             };
             request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
 
-            IRestResponse result = Execute(GetOAuthInfo(userId), request);
+            RestResponse result = Execute(GetOAuthInfo(userId), request);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
         }
     }

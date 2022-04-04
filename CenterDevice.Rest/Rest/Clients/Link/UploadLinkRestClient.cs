@@ -31,7 +31,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public UploadLink GetLink(string userId, string linkId)
         {
-            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.GET, ContentType.APPLICATION_JSON);
+            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Get, ContentType.APPLICATION_JSON);
 
             var result = Execute<UploadLink>(GetOAuthInfo(userId), linkRequest);
             UploadLink resultUnwrapped = UnwrapResponse(result, new StatusCodeResponseHandler<UploadLink>(HttpStatusCode.OK));
@@ -41,7 +41,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public void DeleteLink(string userId, string linkId)
         {
-            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.DELETE, ContentType.APPLICATION_JSON);
+            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Delete, ContentType.APPLICATION_JSON);
 
             var result = Execute<Link>(GetOAuthInfo(userId), linkRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
@@ -49,7 +49,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public void UpdateLink(string userId, string linkId, string collectionId, string name, List<string> tags, DateTime? expiryDate, int? maxDocuments, string password, bool? emailCreatorOnUpload)
         {
-            var updateLinkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.PUT, ContentType.APPLICATION_JSON);
+            var updateLinkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Put, ContentType.APPLICATION_JSON);
 
 #pragma warning disable IDE0028 // Initialisierung der Sammlung vereinfachen
             var parameters = new JObject();

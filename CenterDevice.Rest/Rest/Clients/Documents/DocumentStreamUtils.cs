@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.Clients.Documents
     {
         private const int DEFAULT_COPY_BUFFER_SIZE = 81920;
 
-        internal static void AddFileToUpload(IRestRequest uploadRequest, string fileName, string filePath, IStreamWrapper streamWrapper, CancellationToken cancellationToken)
+        internal static void AddFileToUpload(RestRequest uploadRequest, string fileName, string filePath, IStreamWrapper streamWrapper, CancellationToken cancellationToken)
         {
             uploadRequest.Files.Add(new FileParameter()
             {

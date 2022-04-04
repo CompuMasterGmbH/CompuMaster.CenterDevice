@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -6,43 +6,43 @@ namespace CenterDevice.Rest.Clients.Link
 {
     public class UploadLink
     {
-        [DeserializeAs(Name = RestApiConstants.ID)]
+        [JsonPropertyName(RestApiConstants.ID)]
         public string Id { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.CREATOR)]
+        [JsonPropertyName(RestApiConstants.CREATOR)]
         public string Creator { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.NAME)]
+        [JsonPropertyName(RestApiConstants.NAME)]
         public string Name { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.CREATION_DATE)]
+        [JsonPropertyName(RestApiConstants.CREATION_DATE)]
         public DateTime? CreationDate { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.EXPIRY_DATE)]
+        [JsonPropertyName(RestApiConstants.EXPIRY_DATE)]
         public DateTime? ExpiryDate { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.MAX_DOCUMENTS)]
+        [JsonPropertyName(RestApiConstants.MAX_DOCUMENTS)]
         public int? MaxDocuments { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.MAX_BYTES)]
+        [JsonPropertyName(RestApiConstants.MAX_BYTES)]
         public long? MaxBytes { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.COLLECTION)]
+        [JsonPropertyName(RestApiConstants.COLLECTION)]
         public string Collection { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.TAGS)]
+        [JsonPropertyName(RestApiConstants.TAGS)]
         public System.Collections.Generic.List<string> Tags { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.UPLOADS)]
+        [JsonPropertyName(RestApiConstants.UPLOADS)]
         public int? UploadsMade { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.UPLOADED_BYTES)]
+        [JsonPropertyName(RestApiConstants.UPLOADED_BYTES)]
         public long? UploadedBytes { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.PASSWORD)]
+        [JsonPropertyName(RestApiConstants.PASSWORD)]
         public string Password { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.EMAIL_CREATOR_ON_UPLOAD)]
+        [JsonPropertyName(RestApiConstants.EMAIL_CREATOR_ON_UPLOAD)]
         public bool EMailCreatorOnUpload { get; set; }
 
         [NonSerialized]

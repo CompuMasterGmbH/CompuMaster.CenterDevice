@@ -36,7 +36,7 @@ namespace CenterDevice.Rest.Clients.HealthCheck
                 }
             }
 
-            return testClient.Execute(CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON)).StatusCode == HttpStatusCode.OK;
+            return testClient.Execute(CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON)).StatusCode == HttpStatusCode.OK;
         }
     }
 }

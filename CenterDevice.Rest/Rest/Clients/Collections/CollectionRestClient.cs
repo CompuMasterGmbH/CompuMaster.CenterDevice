@@ -27,7 +27,7 @@ namespace CenterDevice.Rest.Clients.Collections
             List<string> documents = new List<string>();
             documents.Add(documentId);
 
-            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Post, ContentType.APPLICATION_JSON);
             request.AddJsonBody(new { action = RestApiConstants.REMOVE_DOCUMENTS, @params = new { documents = documents } });
 
             return UnwrapResponse(Execute<DocumentSharingResponse>(GetOAuthInfo(userId), request), new StatusCodeResponseHandler<DocumentSharingResponse>(HttpStatusCode.NoContent, HttpStatusCode.OK));
@@ -38,7 +38,7 @@ namespace CenterDevice.Rest.Clients.Collections
             List<string> documents = new List<string>();
             documents.Add(documentId);
 
-            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Post, ContentType.APPLICATION_JSON);
             request.AddJsonBody(new { action = RestApiConstants.ADD_DOCUMENTS, @params = new { documents = documents } });
 
             return UnwrapResponse(Execute<DocumentSharingResponse>(GetOAuthInfo(userId), request), new StatusCodeResponseHandler<DocumentSharingResponse>(HttpStatusCode.NoContent, HttpStatusCode.OK));
@@ -46,7 +46,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public CollectionEraseResponse EraseCollection(string userId, string collectionId, bool onlyOwnedDocuments)
         {
-            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Post, ContentType.APPLICATION_JSON);
 
             var parameters = new JObject();
             parameters[RestApiConstants.ACTION] = RestApiConstants.ERASE;
@@ -68,7 +68,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         private SharingResponse UpdateCollectionSharing(string userId, string collectionId, IEnumerable<string> users, IEnumerable<string> groups, string sHARE)
         {
-            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Post, ContentType.APPLICATION_JSON);
 
             var parameters = new JObject();
             parameters[RestApiConstants.ACTION] = sHARE;
@@ -101,7 +101,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public void RenameCollection(string userId, string collectionId, string newName)
         {
-            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.PUT, ContentType.APPLICATION_JSON);
+            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Put, ContentType.APPLICATION_JSON);
             collectionRequest.AddJsonBody(new { name = newName });
 
             var result = Execute(GetOAuthInfo(userId), collectionRequest);
@@ -110,7 +110,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public void RenameCollection(OAuthInfo oAuthInfo, string collectionId, string newName)
         {
-            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.PUT, ContentType.APPLICATION_JSON);
+            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Put, ContentType.APPLICATION_JSON);
             collectionRequest.AddJsonBody(new { name = newName });
 
             var result = Execute(oAuthInfo, collectionRequest);
@@ -124,7 +124,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public Collection GetCollection(string userId, string collectionId, RestRequestFields fields)
         {
-            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.GET, ContentType.APPLICATION_JSON);
+            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Get, ContentType.APPLICATION_JSON);
 
             if (fields == RestRequestFields.ALL)
             {
@@ -141,7 +141,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public void DeleteCollection(string userId, string collectionId)
         {
-            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.DELETE);
+            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Delete);
 
             var result = Execute<CreateCollectionResponse>(GetOAuthInfo(userId), createCollectionsRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
@@ -149,7 +149,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public void DeleteCollection(OAuthInfo oAuthInfo, string collectionId)
         {
-            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.DELETE);
+            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Delete);
 
             var result = Execute<CreateCollectionResponse>(oAuthInfo, createCollectionsRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
@@ -157,7 +157,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public void ArchiveCollection(string userId, string collectionId)
         {
-            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.POST, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Post, ContentType.APPLICATION_JSON);
 
             var parameters = new JObject
             {
@@ -165,7 +165,7 @@ namespace CenterDevice.Rest.Clients.Collections
             };
             request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
 
-            IRestResponse result = Execute(GetOAuthInfo(userId), request);
+            RestResponse result = Execute(GetOAuthInfo(userId), request);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
         }
     }

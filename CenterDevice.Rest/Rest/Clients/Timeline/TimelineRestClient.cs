@@ -33,7 +33,7 @@ namespace CenterDevice.Rest.Clients.Timeline
 
         public TimelineSearchResults GetTimelineEvents(string userId, DateTime startDate, int offset, int rows, List<string> types)
         {
-            var timelineSearchRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var timelineSearchRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
 
             timelineSearchRequest.AddJsonBody(new { action = RestApiConstants.SEARCH, @params = new { types = types, offset = offset, rows = rows, timestamp = new { from = toIso8601(startDate) } } });
 
@@ -43,7 +43,7 @@ namespace CenterDevice.Rest.Clients.Timeline
 
         public TimelineSearchResults Scroll(string userId, string previousId, List<string> types, int rows = 500)
         {
-            var timelineSearchRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var timelineSearchRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
 
             var parameters = new JObject();
             if (types != null)

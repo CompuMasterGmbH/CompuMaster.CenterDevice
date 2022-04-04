@@ -1,6 +1,6 @@
 ﻿using CenterDevice.Model.Collection;
 using CenterDevice.Rest.Clients.Common;
-using RestSharp.Deserializers;
+using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 
@@ -19,18 +19,18 @@ namespace CenterDevice.Rest.Clients.Collections
         public string Link { get; set; }
         public string UploadLink { get; set; }
         public bool Public { get; set; }
-        [DeserializeAs(Name = RestApiConstants.FILTER_PARAMS)]
+        [JsonPropertyName(RestApiConstants.FILTER_PARAMS)]
         public object FilterParameters { get; set; }
         public Sharings Users { get; set; }
         public Sharings Groups { get; set; }
         public bool Auditing { get; set; }
-        [DeserializeAs(Name = RestApiConstants.NEED_TO_OPT_IN)]
+        [JsonPropertyName(RestApiConstants.NEED_TO_OPT_IN)]
         public bool? NeedToOptIn { get; set; }
 
         public List<Folders.Folder> SubFolders { get; set; }
-        [DeserializeAs(Name = RestApiConstants.HAS_FOLDERS)]
+        [JsonPropertyName(RestApiConstants.HAS_FOLDERS)]
         public bool? HasFoldersServerInfo { get; set; }
-        [DeserializeAs(Name = RestApiConstants.HAS_SUBFOLDERS)]
+        [JsonPropertyName(RestApiConstants.HAS_SUBFOLDERS)]
         public bool? HasFolders
         {
             get
@@ -56,9 +56,9 @@ namespace CenterDevice.Rest.Clients.Collections
         }
         public List<Rest.Clients.Documents.Metadata.DocumentFullMetadata> Documents;
 
-        [DeserializeAs(Name = RestApiConstants.ARCHIVED_DATE)]
+        [JsonPropertyName(RestApiConstants.ARCHIVED_DATE)]
         public DateTime? ArchivedDate { get; set; }
-        [DeserializeAs(Name = RestApiConstants.OWNER)]
+        [JsonPropertyName(RestApiConstants.OWNER)]
         public string Owner { get; set; }
 
         public bool IsShared

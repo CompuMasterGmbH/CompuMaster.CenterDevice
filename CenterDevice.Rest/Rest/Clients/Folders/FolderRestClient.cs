@@ -24,7 +24,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public Folder GetFolder(string userId, string id, string[] fields)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.GET, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.Get, ContentType.APPLICATION_JSON);
             if (fields != null)
             {
                 folderRequest.AddQueryParameter(RestApiConstants.FIELDS, string.Join(",", fields));
@@ -36,7 +36,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public void DeleteFolder(string userId, string id)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.DELETE, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.Delete, ContentType.APPLICATION_JSON);
 
             var result = Execute(GetOAuthInfo(userId), folderRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
@@ -44,7 +44,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public FolderEraseResponse EraseFolder(string userId, string id, bool onlyOwnedDocuments)
         {
-            var eraseFolder = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            var eraseFolder = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
 
 #pragma warning disable IDE0028 // Initialisierung der Sammlung vereinfachen
             var parameters = new JObject();
@@ -68,7 +68,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public void RenameFolder(string userId, string id, string newName)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.PUT, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.Put, ContentType.APPLICATION_JSON);
             folderRequest.AddJsonBody(new { name = newName });
 
             var result = Execute(GetOAuthInfo(userId), folderRequest);
@@ -77,7 +77,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public void RemoveDocument(string userId, string documentId, string folderId, bool removeFromCollection)
         {
-            var removeDocumentRequest = CreateRestRequest(URI_RESOURCE + folderId, Method.POST, ContentType.APPLICATION_JSON);
+            var removeDocumentRequest = CreateRestRequest(URI_RESOURCE + folderId, Method.Post, ContentType.APPLICATION_JSON);
 
 #pragma warning disable IDE0028 // Initialisierung der Sammlung vereinfachen
             var removeDetails = new JObject();
@@ -99,7 +99,7 @@ namespace CenterDevice.Rest.Clients.Folders
         public void AddDocument(string userId, string documentId, string targetFolderId)
         {
             List<string> documentsIds = new List<string>(new string[] { documentId });
-            var addOrRemoveDocumentRequest = CreateRestRequest(URI_RESOURCE + targetFolderId, Method.POST, ContentType.APPLICATION_JSON);
+            var addOrRemoveDocumentRequest = CreateRestRequest(URI_RESOURCE + targetFolderId, Method.Post, ContentType.APPLICATION_JSON);
             addOrRemoveDocumentRequest.AddJsonBody(new { action = RestApiConstants.ADD_DOCUMENTS, @params = new { documents = documentsIds } });
 
             var result = Execute(GetOAuthInfo(userId), addOrRemoveDocumentRequest);
@@ -108,7 +108,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public void MoveFolder(string userId, string folderId, string targetFolderId, string targetCollectionId)
         {
-            var moveFolderRequest = CreateRestRequest(URI_RESOURCE + folderId, Method.PUT, ContentType.APPLICATION_JSON);
+            var moveFolderRequest = CreateRestRequest(URI_RESOURCE + folderId, Method.Put, ContentType.APPLICATION_JSON);
 
             if (targetFolderId == null || targetFolderId == RestApiConstants.NONE)
             {
@@ -135,7 +135,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         private SharingResponse UpdateFolderSharing(string userId, string folderId, IEnumerable<string> userIds, IEnumerable<string> groupIds, string sHARE)
         {
-            var shareFolder = CreateRestRequest(URI_RESOURCE + folderId, Method.POST, ContentType.APPLICATION_JSON);
+            var shareFolder = CreateRestRequest(URI_RESOURCE + folderId, Method.Post, ContentType.APPLICATION_JSON);
 
             var sharingDetails = new JObject();
             if (userIds?.Any() == true)
