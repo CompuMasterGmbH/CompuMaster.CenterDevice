@@ -126,10 +126,12 @@ namespace CenterDevice.Rest.Clients.Documents
         {
             RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.MULTIPART_FORM_DATA);
             uploadRequest.AlwaysMultipartFormData = true;
-            uploadRequest.AddParameter(GenerateFormParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ContentType.APPLICATION_JSON));
+            uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, path, streamWrapper, cancellationToken);
             uploadRequest.Timeout = int.MaxValue;
-            uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
+            //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
+            //-> TODO: re-activate or find workaround for following line:
+            //uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
 
             var result = Execute<UploadDocumentResponse>(GetOAuthInfo(userId), uploadRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<UploadDocumentResponse>(HttpStatusCode.Created));
@@ -168,16 +170,6 @@ namespace CenterDevice.Rest.Clients.Documents
 
             var result = Execute(GetOAuthInfo(userId), moveRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
-        }
-
-        private Parameter GenerateFormParameter(string name, object value, string contentType)
-        {
-            Parameter parameter = new Parameter(name, value, contentType, ParameterType.RequestBody);
-            //parameter.Name = name;
-            //parameter.Value = value;
-            //parameter.ContentType = contentType;
-            //parameter.Type = ParameterType.RequestBody;
-            return parameter;
         }
 
         private string GenerateDocumentUploadJson(string filename, string fileFullpath, DateTime? documentDate, List<string> collectionIds, List<string> folderIds)

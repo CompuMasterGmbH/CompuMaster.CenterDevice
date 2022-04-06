@@ -1,5 +1,6 @@
 ﻿using log4net;
 using RestSharp;
+using RestSharp.Extensions;
 using System;
 using System.Net;
 using System.Text;
@@ -23,8 +24,9 @@ namespace CenterDevice.Rest.Clients.OAuth
         {
             this.configuration = configuration;
 
-            Client = new RestClient(configuration.BaseAddress);
-            Client.UserAgent = configuration.UserAgent;
+            RestClientOptions options = new RestClientOptions(configuration.BaseAddress);
+            options.UserAgent = configuration.UserAgent;
+            Client = new RestClient(options);
         }
 
         public RestResponse<OAuthInfo> SwapToken(OAuthInfo oAuthInfo, string userId)
@@ -47,7 +49,7 @@ namespace CenterDevice.Rest.Clients.OAuth
                 BuildRefreshTokenBodyMessage(oAuthInfo.refresh_token),
                 ParameterType.RequestBody);
 
-            return Client.Execute<OAuthInfo>(request);
+            return Client.ExecuteAsync<OAuthInfo>(request).Result;
         }
 
         public RestResponse<OAuthInfo> DestroyToken(OAuthInfo oAuthInfo)
@@ -61,7 +63,7 @@ namespace CenterDevice.Rest.Clients.OAuth
                 BuildDestroyTokensBodyMessage(oAuthInfo.access_token, oAuthInfo.refresh_token),
                 ParameterType.RequestBody);
 
-            return Client.Execute<OAuthInfo>(request);
+            return Client.ExecuteAsync<OAuthInfo>(request).Result;
         }
 
         private RestResponse<OAuthInfo> SwapToken(string body)
@@ -72,7 +74,7 @@ namespace CenterDevice.Rest.Clients.OAuth
 
             request.AddParameter(ContentType.APPLICATION_FORM_URLENCODED, body, ParameterType.RequestBody);
 
-            return Client.Execute<OAuthInfo>(request);
+            return Client.ExecuteAsync<OAuthInfo>(request).Result;
         }
 
         private string BuildSwapTokenBodyMessageForEmailAndTenantId(string accessToken, string email, string tenantId)

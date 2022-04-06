@@ -29,7 +29,7 @@ namespace CenterDevice.Rest.ResponseHandler
             }
         }
 
-        private static string HeadersToString(IList<Parameter> headers)
+        private static string HeadersToString(IReadOnlyCollection<HeaderParameter> headers)
         {
             string Result = null;
             foreach (Parameter p in headers)

@@ -43,35 +43,34 @@ namespace CenterDevice.Rest.Clients
             this.errorHandler = errorHandler;
             this.oAuthInfoProvider = oauthInfo;
             this.ApiVersionPrefix = apiVersionPrefix;
-            client = new RestClient(configuration.BaseAddress)
+            var options = new RestClientOptions(configuration.BaseAddress)
             {
-                UserAgent = configuration.UserAgent,
+                UserAgent = configuration.UserAgent
             };
+            client = new RestClient(options);
             //remove all XML deserializers since response is always expected as JSON, never XML
-            client.RemoveHandler("");
-            client.RemoveHandler("*"); //remove default handler which is XML instead of JSON!
-            client.RemoveHandler("application/xml");
-            client.RemoveHandler("text/xml");
-            client.RemoveHandler("text/javascript");
+            client.UseJson();
+
+            CustomOptionBaseAddress = options.BaseUrl.AbsoluteUri;
+            CustomOptionUserAgent = options.UserAgent;
         }
 
-        protected string GetBaseAddress()
-        {
-            return client.BaseUrl.AbsoluteUri;
-        }
+        protected readonly string CustomOptionUserAgent;
+        
+        protected readonly string CustomOptionBaseAddress;
 
         protected virtual RestResponse Execute(OAuthInfo oAuthInfo, RestRequest request)
         {
             PrepareRequest(oAuthInfo, request);
 
-            return HandleResponseSync(oAuthInfo, request, client.Execute(request));
+            return HandleResponseSync(oAuthInfo, request, client.ExecuteAsync(request).Result);
         }
 
         protected virtual RestResponse<T> Execute<T>(OAuthInfo oAuthInfo, RestRequest request) where T : new()
         {
             PrepareRequest(oAuthInfo, request);
 
-            return HandleResponseSync(oAuthInfo, request, client.Execute<T>(request));
+            return HandleResponseSync(oAuthInfo, request, client.ExecuteAsync<T>(request).Result);
         }
 
         private void PrepareRequest(OAuthInfo oAuthInfo, RestRequest request)
@@ -119,7 +118,7 @@ namespace CenterDevice.Rest.Clients
 
                 SwapAuthorizationHeader(refreshOAuthInfo, request);
 
-                return client.Execute<T>(request);
+                return client.ExecuteAsync<T>(request).Result;
             }
             else if (IsRateLimitExceeded(result))
             {
@@ -151,7 +150,7 @@ namespace CenterDevice.Rest.Clients
 
                 SwapAuthorizationHeader(refreshOAuthInfo, request);
 
-                return client.Execute(request);
+                return client.ExecuteAsync(request).Result;
             }
             else if (IsRateLimitExceeded(result))
             {

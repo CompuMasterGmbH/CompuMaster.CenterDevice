@@ -12,31 +12,35 @@ namespace CenterDevice.Rest.Clients.HealthCheck
 
         public bool IsConnectionWorking(bool useDefaultProxy, string userName, string password)
         {
-            var testClient = new RestClient(GetBaseAddress());
-            testClient.UserAgent = client.UserAgent;
+            var options = new RestClientOptions(CustomOptionBaseAddress)
+            {
+                UserAgent = this.CustomOptionUserAgent
+            };
 
             if (useDefaultProxy)
             {
-                testClient.Proxy = WebRequest.GetSystemWebProxy();
+                options.Proxy = WebRequest.GetSystemWebProxy();
             }
             else
             {
-                testClient.Proxy = null;
+                options.Proxy = null;
             }
 
-            if (testClient.Proxy != null)
+            if (options.Proxy != null)
             {
                 if (userName != null && password != null)
                 {
-                    testClient.Proxy.Credentials = new NetworkCredential(userName, password);
+                    options.Proxy.Credentials = new NetworkCredential(userName, password);
                 }
                 else
                 {
-                    testClient.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    options.Proxy.Credentials = CredentialCache.DefaultNetworkCredentials;
                 }
             }
 
-            return testClient.Execute(CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON)).StatusCode == HttpStatusCode.OK;
+            var testClient = new RestClient(options);
+
+            return testClient.ExecuteAsync(CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON)).Result.StatusCode == HttpStatusCode.OK;
         }
     }
 }

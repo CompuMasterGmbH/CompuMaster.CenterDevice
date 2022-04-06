@@ -8,15 +8,50 @@ namespace CenterDevice.Rest.Clients.Documents
     {
         private const int DEFAULT_COPY_BUFFER_SIZE = 81920;
 
+
         internal static void AddFileToUpload(RestRequest uploadRequest, string fileName, string filePath, IStreamWrapper streamWrapper, CancellationToken cancellationToken)
         {
-            uploadRequest.Files.Add(new FileParameter()
+            throw new System.NotImplementedException("TODO");
+            /*
+                        //System.Func<Stream>
+                        var GetFile = uploadStream =>
+                        {
+                            using (var fileStream = WrapUploadStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete), streamWrapper))
+                            {
+                                CopyTo(fileStream, uploadStream, cancellationToken);
+                            }
+                        }
+
+                        byte[] uploadStream;
+                        using (var fileStream = WrapUploadStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete), streamWrapper))
+                        {
+                            CopyTo(fileStream, uploadStream, cancellationToken);
+                        }
+
+            */
+            /*
+            //FileParameter file = FileParameter.Create();
+            FileParameter addFile = FileParameter.Create(name: fileName,
+                getFile: uploadStream() =>
+                {
+                    using (var fileStream = WrapUploadStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete), streamWrapper))
+                    {
+                        CopyTo(fileStream, uploadStream, cancellationToken);
+                    }
+                },
+                fileName: Path.GetFileName(filePath),
+                contentType: null
+                );
+            uploadRequest.Files.Add(addFile);
+
+
+
+            uploadRequest.Files.Add(new RestSharp.FileParameter()
             {
                 Name = fileName,
                 FileName = Path.GetFileName(filePath),
-                ContentLength = new FileInfo(filePath).Length,
                 ContentType = null,
-                Writer = uploadStream =>
+                GetFile = uploadStream =>
                 {
                     using (var fileStream = WrapUploadStream(new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete), streamWrapper))
                     {
@@ -24,6 +59,7 @@ namespace CenterDevice.Rest.Clients.Documents
                     }
                 }
             });
+            */
         }
 
         internal static Stream WrapUploadStream(Stream stream, IStreamWrapper streamWrapper)
