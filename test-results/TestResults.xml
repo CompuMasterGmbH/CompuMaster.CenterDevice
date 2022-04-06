@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testsuites time="7.698" tests="10" failures="0">
+  <testsuite id="0" name="CenterDevice.Teamwork.Test" tests="10" failures="0" time="7.698">
+    <testcase classname="Scopevisio.OpenApi.Test.CollectionsTest" name="GetCollectionIds" time="2.5910000" />
+    <testcase classname="Scopevisio.OpenApi.Test.CollectionsTest" name="GetCollections" time="2.1400000" />
+    <testcase classname="Scopevisio.OpenApi.Test.Settings" name="PersistInputValue" time="0.0010000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="CurrentAuthenticationContextUserID" time="0.4380000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="CurrentContextUserId" time="0.5780000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="GetTypes" time="0.0810000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="RootDirAccess" time="0.3050000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="RootDirectory" time="0.0020000" />
+    <testcase classname="Scopevisio.OpenApi.Test.TeamworkBasicTest" name="ServerAccessAndAuthorization" time="0.0010000" />
+    <testcase classname="Scopevisio.OpenApi.Test.UploadLinksTest" name="GetAllUploadLinks" time="1.5610000" />
+  </testsuite>
+</testsuites>
