@@ -10,11 +10,8 @@
 
 * Scopevisio Teamwork (OpenScope)
 * MISSING: CenterDevice
-
-## Current development status
-PLEASE NOTE: 
-* the library already works for some 3rd party labels which indirectly involve the CenterDevice API.
-* as per today, the library DOES NOT work with the direct CenterDevice API since the authentification process is not available/implemented
+  * the library already works for some 3rd party labels which indirectly involve the CenterDevice API.
+  * as per today, the library DOES NOT work as a pure CenterDevice client since the CenterDevice API lacks an adequate authentification process (API allows regular login only as web login)
 
 ## TODO - NOT YET WORKING - Getting Started
 
