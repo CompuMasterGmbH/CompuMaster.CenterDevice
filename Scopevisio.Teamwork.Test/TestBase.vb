@@ -19,9 +19,9 @@ Imports System.Reflection
     End Property
 
     Private Shared Function CreateTeamworkIOClient() As CompuMaster.Scopevisio.Teamwork.TeamworkIOClient
-        Dim username As String = Settings.InputFromBufferFile("username")
-        Dim customerno As String = Settings.InputFromBufferFile("customer no.")
-        Dim password As String = Settings.InputFromBufferFile("password")
+        Dim username As String = Settings.InputLine("username")
+        Dim customerno As String = Settings.InputLine("customer no.")
+        Dim password As String = Settings.InputLine("password")
 
         Assert.NotNull(username, "User credentials not found in environment or buffer files (run Sample app for creating buffer files in temp directory!)")
         Assert.NotNull(customerno, "User credentials not found in environment or buffer files (run Sample app for creating buffer files in temp directory!)")
