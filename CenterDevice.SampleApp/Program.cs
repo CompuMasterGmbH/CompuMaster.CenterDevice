@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CenterDevice.IO;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.SampleApp
 {
     class Program
@@ -40,7 +41,7 @@ namespace CenterDevice.SampleApp
                 //    username);  //TODO: provide arguments as usual for CenterDevice REST client
 
                 //Show available directory structure
-                if (false)
+                if (true)
                 {
                     System.Console.WriteLine("\r\n## Initial directory listing - flat");
                     System.Console.WriteLine(IOClient.RootDirectory.ToStringListing(false, true));
@@ -147,7 +148,7 @@ namespace CenterDevice.SampleApp
                 }
 
                 //File details
-                if (true)
+                if (false)
                 {
                     IO.DirectoryInfo BaseTestPath;
                     string OpenTestPath;
@@ -171,7 +172,7 @@ namespace CenterDevice.SampleApp
                 }
                 
                 //File upload/download/deletion
-                if (true)
+                if (false)
                 {
                     IO.DirectoryInfo BaseTestPath;
                     string OpenTestPath;
@@ -298,3 +299,4 @@ namespace CenterDevice.SampleApp
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

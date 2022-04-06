@@ -2,6 +2,7 @@
 using RestSharp;
 using CenterDevice.Rest.Clients.Documents;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.ResponseHandler
 {
     public class RenameDocumentResponseHandler: BaseResponseHandler, DataResponseHandler<NewVersionUploadResponse>
@@ -22,3 +23,4 @@ namespace CenterDevice.Rest.ResponseHandler
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

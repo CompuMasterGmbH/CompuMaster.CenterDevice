@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents
 {
     public interface IDocumentsRestClient
@@ -26,3 +27,4 @@ namespace CenterDevice.Rest.Clients.Documents
         void MoveDocuments(string userId, IEnumerable<string> documentIds, string srcCollection, string srcFolder, string dstCollection, string dstFolder);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

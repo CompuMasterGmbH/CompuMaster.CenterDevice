@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.IO
 {
     public class FileInfo
@@ -291,6 +292,8 @@ namespace CenterDevice.IO
                     s.Dispose();
                 }
             }
+            if (this.ModificationDate.HasValue)
+                System.IO.File.SetLastWriteTimeUtc(targetFileName, this.ModificationDate.Value);
         }
 
         /// <summary>
@@ -309,3 +312,4 @@ namespace CenterDevice.IO
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

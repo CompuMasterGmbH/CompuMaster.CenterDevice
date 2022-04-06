@@ -1,6 +1,7 @@
 ﻿using RestSharp.Deserializers;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents.Metadata
 {
     public class DocumentFullMetadata : DocumentBasicMetadata, IDocumentSharingMetadata, IDocumentFolderMetadata, IDocumentLinkMetadata, IDocumentLockMetadata
@@ -29,3 +30,4 @@ namespace CenterDevice.Rest.Clients.Documents.Metadata
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

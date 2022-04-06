@@ -3,6 +3,7 @@ using CenterDevice.Rest.ResponseHandler;
 using RestSharp;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Groups
 {
     public class GroupRestClient : CenterDeviceRestClient, IGroupRestClient
@@ -26,3 +27,4 @@ namespace CenterDevice.Rest.Clients.Groups
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

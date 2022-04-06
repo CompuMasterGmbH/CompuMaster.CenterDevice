@@ -4,6 +4,7 @@ using CenterDevice.Rest.Utils;
 using RestSharp;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.ResponseHandler
 {
     public class CreateFolderResponseHandler : BaseResponseHandler, DataResponseHandler<FolderCreationResponse>
@@ -89,3 +90,4 @@ namespace CenterDevice.Rest.ResponseHandler
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

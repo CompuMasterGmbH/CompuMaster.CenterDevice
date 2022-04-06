@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents
 {
     public interface IDocumentRestClient
@@ -25,3 +26,4 @@ namespace CenterDevice.Rest.Clients.Documents
         DeleteDocumentsResponse DeleteDocument(string userId, string documentId);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

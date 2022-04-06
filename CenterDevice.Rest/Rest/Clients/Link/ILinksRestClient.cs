@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Rest.Clients.Link
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Rest.Clients.Link
 {
     public interface ILinksRestClient
     {
@@ -9,3 +10,4 @@
         LinkCreationResponse CreateCollectionLink(string userId, string id, LinkAccessControl accessControl);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

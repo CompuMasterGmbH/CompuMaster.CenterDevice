@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Groups
 {
     public class GroupsRestClient : CenterDeviceRestClient, IGroupsRestClient
@@ -44,3 +45,4 @@ namespace CenterDevice.Rest.Clients.Groups
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

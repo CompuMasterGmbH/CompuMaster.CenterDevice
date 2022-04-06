@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Timeline
 {
     public class TimelineRestClient : CenterDeviceRestClient, ITimelineRestClient
@@ -73,3 +74,4 @@ namespace CenterDevice.Rest.Clients.Timeline
     }
 
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

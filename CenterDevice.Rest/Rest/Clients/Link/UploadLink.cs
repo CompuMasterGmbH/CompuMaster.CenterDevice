@@ -1,6 +1,7 @@
 ﻿using RestSharp.Deserializers;
 using System;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Link
 {
     public class UploadLink
@@ -59,3 +60,4 @@ namespace CenterDevice.Rest.Clients.Link
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

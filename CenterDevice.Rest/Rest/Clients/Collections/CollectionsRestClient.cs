@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Collections
 {
     public class CollectionsRestClient : CenterDeviceRestClient, ICollectionsRestClient
@@ -39,6 +40,7 @@ namespace CenterDevice.Rest.Clients.Collections
                 searchRequest.AddQueryParameter(RestApiConstants.FIELDS, Utils.FieldUtils.GetFieldIncludes(typeof(Collection)));
             }
 
+            //following lines might fail with HttpStatusCode.BadRequest when the user is missing an assigned license
             var result = Execute<CollectionsResults>(GetOAuthInfo(userId), searchRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<CollectionsResults>((new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.NoContent })));
         }
@@ -68,9 +70,10 @@ namespace CenterDevice.Rest.Clients.Collections
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.OK, HttpStatusCode.NoContent));
             if (string.IsNullOrWhiteSpace(result.Content))
             {
-                return System.Array.Empty<string>();
+                return new string[] { };
             }
             return JObject.Parse(result.Content)[RestApiConstants.COLLECTIONS]?.Select(i => i[RestApiConstants.ID]).Values<string>();
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

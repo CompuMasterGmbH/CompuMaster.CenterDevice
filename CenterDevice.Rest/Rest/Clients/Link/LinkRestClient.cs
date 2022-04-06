@@ -5,6 +5,7 @@ using Ninject;
 using RestSharp;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Link
 {
     public class LinkRestClient : CenterDeviceRestClient, ILinkRestClient
@@ -54,3 +55,4 @@ namespace CenterDevice.Rest.Clients.Link
 
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

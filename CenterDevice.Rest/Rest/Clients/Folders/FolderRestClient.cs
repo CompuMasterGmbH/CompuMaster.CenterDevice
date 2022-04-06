@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Folders
 {
     public class FolderRestClient : CenterDeviceRestClient, IFolderRestClient
@@ -158,3 +159,4 @@ namespace CenterDevice.Rest.Clients.Folders
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.OAuth
 {
     public interface IOAuthRestClient
@@ -13,3 +14,4 @@ namespace CenterDevice.Rest.Clients.OAuth
         IRestResponse<OAuthInfo> DestroyToken(OAuthInfo oAuthInfo);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

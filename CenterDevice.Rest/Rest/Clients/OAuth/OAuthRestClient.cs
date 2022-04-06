@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Text;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.OAuth
 {
     public class OAuthRestClient : IOAuthRestClient
@@ -157,3 +158,4 @@ namespace CenterDevice.Rest.Clients.OAuth
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

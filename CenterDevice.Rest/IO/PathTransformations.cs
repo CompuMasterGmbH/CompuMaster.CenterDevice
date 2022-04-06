@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.IO
 {
     public class PathTransformations
@@ -77,6 +78,7 @@ namespace CenterDevice.IO
         /// Combine directory names and file name to a path
         /// </summary>
         /// <param name="directoryNames"></param>
+        /// <param name="fileName"></param>
         /// <returns></returns>
         public string CombinePath(string[] directoryNames, string fileName)
         {
@@ -130,3 +132,4 @@ namespace CenterDevice.IO
 #pragma warning restore CA1819 // Properties should not return arrays
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

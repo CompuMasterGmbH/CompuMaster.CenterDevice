@@ -1,4 +1,4 @@
-﻿
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest
 {
     public enum ReturnCode : int
@@ -33,3 +33,4 @@ namespace CenterDevice.Rest
         INTERNAL_SERVER_ERROR = 9999
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.IO
 {
     public class DirectoryInfo
     {
-/// <summary>
-/// Create a directory instance representing the root directory
-/// </summary>
-/// <param name="client"></param>
+        /// <summary>
+        /// Create a directory instance representing the root directory
+        /// </summary>
+        /// <param name="client"></param>
         public DirectoryInfo(CenterDevice.IO.IOClientBase client)
         {
             this.ioClient = client;
@@ -70,7 +71,7 @@ namespace CenterDevice.IO
         }
 
         protected DirectoryInfo[] getDirectories = null;
-        public DirectoryInfo[]  GetDirectories()
+        public DirectoryInfo[] GetDirectories()
         {
             if (this.getDirectories == null)
             {
@@ -78,7 +79,7 @@ namespace CenterDevice.IO
                 {
                     //root directory
                     //List<CenterDevice.Rest.Clients.Collections.Collection> results = this.ioClient.ApiClient.Collections.GetCollections(this.ioClient.UserID).Collections;
-                    List<CenterDevice.Rest.Clients.Collections.Collection> results = this.ioClient.LookupCollections(); 
+                    List<CenterDevice.Rest.Clients.Collections.Collection> results = this.ioClient.LookupCollections();
                     var dirs = new List<DirectoryInfo>();
                     if (results != null)
                     {
@@ -248,7 +249,7 @@ namespace CenterDevice.IO
                 return this.OpenDirectoryPath(directoryNames).GetFile(fileName);
         }
 
-     
+
         internal protected FileInfo[] getFiles = null;
         /// <summary>
         /// Get the directory's files
@@ -261,7 +262,7 @@ namespace CenterDevice.IO
                 if (this.IsRootDirectory)
                 {
                     //root directory can't contain files, only directories (collections)
-                    this.getFiles = System.Array.Empty<FileInfo>();
+                    this.getFiles = new FileInfo[] { };
                 }
                 else if (this.restCollection != null)
                 {
@@ -407,7 +408,7 @@ namespace CenterDevice.IO
             {
                 if (this.restCollection != null)
                     return this;
-                else 
+                else
                     return this.ParentCollection;
             }
         }
@@ -839,6 +840,7 @@ namespace CenterDevice.IO
         /// Create a new sub directory
         /// </summary>
         /// <param name="directoryName"></param>
+        /// <param name="style"></param>
         public void CreateDirectory(string directoryName, DirectoryType style)
         {
             if (style == DirectoryType.Collection)
@@ -904,9 +906,9 @@ namespace CenterDevice.IO
             if (this.IsRootDirectory)
                 throw new NotSupportedException("Renaming root directory is not supported");
             else if (this.restCollection != null)
-                    this.ioClient.ApiClient.Collection.RenameCollection(this.ioClient.CurrentAuthenticationContextUserID, this.restCollection.Id, targetName);
+                this.ioClient.ApiClient.Collection.RenameCollection(this.ioClient.CurrentAuthenticationContextUserID, this.restCollection.Id, targetName);
             else if (this.restFolder != null)
-                    this.ioClient.ApiClient.Folder.RenameFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, targetName);
+                this.ioClient.ApiClient.Folder.RenameFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, targetName);
             else
                 throw new NotImplementedException("Rename action for this directory type hasn't been implemented, yet");
             this.ParentDirectory.getDirectories = null; //force reload on next request
@@ -915,7 +917,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Create a new sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void AddSharing(string[] userIDs, string[] groupIDs)
         {
             if (this.IsRootDirectory)
@@ -932,7 +933,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Remove a sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void RemoveSharing(string[] userIDs, string[] groupIDs)
         {
             if (this.IsRootDirectory)
@@ -963,7 +963,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Create a new sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public Rest.Clients.Link.LinkCreationResponse AddExternalLinkSharing(DateTime expiryDateUtc, string password, int maxDownloads, bool allowView, bool allowEdit, bool allowRemove, bool allowUpload)
         {
             var result = this.AddExternalLinkSharing(CreateLinkAccessControlItem(expiryDateUtc, password, maxDownloads, allowView, allowEdit, allowRemove, allowUpload));
@@ -974,7 +973,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Create a new sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public Rest.Clients.Link.LinkCreationResponse AddExternalLinkSharing(Rest.Clients.Link.LinkAccessControl settings)
         {
             if (this.IsRootDirectory)
@@ -998,7 +996,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Remove a sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void RemoveExternalLinkSharing(Rest.Clients.Link.LinkCreationResponse link)
         {
             this.RemoveExternalLinkSharing(link.Id);
@@ -1008,7 +1005,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Remove a sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void RemoveExternalLinkSharing(string linkId)
         {
             this.ioClient.ApiClient.Link.DeleteLink(this.ioClient.CurrentAuthenticationContextUserID, linkId);
@@ -1018,7 +1014,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Update a sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void UpdateExternalLinkSharing(string linkId, DateTime expiryDateUtc, string password, int maxDownloads, bool allowView, bool allowEdit, bool allowRemove, bool allowUpload)
         {
             this.UpdateExternalLinkSharing(linkId, CreateLinkAccessControlItem(expiryDateUtc, password, maxDownloads, allowView, allowEdit, allowRemove, allowUpload));
@@ -1028,7 +1023,6 @@ namespace CenterDevice.IO
         /// <summary>
         /// Update a sharing
         /// </summary>
-        /// <param name="directoryName"></param>
         public void UpdateExternalLinkSharing(string linkId, Rest.Clients.Link.LinkAccessControl settings)
         {
             this.ioClient.ApiClient.Link.UpdateLink(this.ioClient.CurrentAuthenticationContextUserID, linkId, settings);
@@ -1036,3 +1030,4 @@ namespace CenterDevice.IO
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

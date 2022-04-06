@@ -1,5 +1,6 @@
 ﻿using System;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Model.Registry
 {
     [Flags]
@@ -47,3 +48,4 @@ namespace CenterDevice.Model.Registry
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

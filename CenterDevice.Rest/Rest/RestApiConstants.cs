@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Rest
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Rest
 {
     public static class RestApiConstants
     {
@@ -255,3 +256,4 @@
         public const string NONE = "none";
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

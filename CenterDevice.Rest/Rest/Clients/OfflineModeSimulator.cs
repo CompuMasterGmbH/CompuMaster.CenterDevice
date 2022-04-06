@@ -1,5 +1,6 @@
 ﻿using CenterDevice.Rest.Exceptions;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients
 {
     public class OfflineModeSimulator
@@ -15,3 +16,4 @@ namespace CenterDevice.Rest.Clients
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

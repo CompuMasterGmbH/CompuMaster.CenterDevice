@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.ResponseHandler
 {
     public class StatusCodeResponseHandler : BaseResponseHandler
@@ -43,3 +44,4 @@ namespace CenterDevice.Rest.ResponseHandler
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

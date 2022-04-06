@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients
 {
     /// <summary>
@@ -15,6 +16,11 @@ namespace CenterDevice.Rest.Clients
     /// </summary>
     public abstract class CenterDeviceClientBase
     {
+        /// <summary>
+        /// Version of the CenterDevice client
+        /// </summary>
+        public static readonly Version Version = new System.Reflection.AssemblyName(typeof(CenterDeviceClientBase).Assembly.FullName).Version;
+
         internal protected readonly IRestClientConfiguration configuration;
         internal protected readonly IOAuthInfoProvider oAuthInfoProvider;
         internal protected readonly IRestClientErrorHandler errorHandler;
@@ -66,3 +72,4 @@ namespace CenterDevice.Rest.Clients
         public CenterDevice.Rest.Clients.Tenant.TenantsRestClient Tenants => new CenterDevice.Rest.Clients.Tenant.TenantsRestClient(oAuthInfoProvider, configuration, errorHandler, apiVersionPrefix);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

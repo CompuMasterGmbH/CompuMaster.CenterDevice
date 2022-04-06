@@ -1,6 +1,7 @@
 ﻿using RestSharp;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.HealthCheck
 {
     public class HealthCheckRestClient : CenterDeviceRestClient, IHealthCheckRestClient
@@ -39,3 +40,4 @@ namespace CenterDevice.Rest.Clients.HealthCheck
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

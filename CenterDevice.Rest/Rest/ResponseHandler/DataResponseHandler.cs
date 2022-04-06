@@ -1,5 +1,6 @@
 ﻿using RestSharp;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.ResponseHandler
 {
     public interface DataResponseHandler<T>
@@ -9,3 +10,4 @@ namespace CenterDevice.Rest.ResponseHandler
         T UnwrapResponse(IRestResponse<T> result);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

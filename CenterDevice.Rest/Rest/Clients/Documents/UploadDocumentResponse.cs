@@ -1,6 +1,7 @@
 ﻿using RestSharp.Deserializers;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents
 {
     public class UploadDocumentResponse
@@ -36,3 +37,4 @@ namespace CenterDevice.Rest.Clients.Documents
         public bool HasFailedFolders { get { return Failed != null && Failed.Count > 0; } }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

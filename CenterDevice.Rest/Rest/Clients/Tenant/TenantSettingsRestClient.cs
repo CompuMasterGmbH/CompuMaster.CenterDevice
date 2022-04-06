@@ -5,6 +5,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Tenant
 {
     public class TenantSettingsRestClient : CenterDeviceRestClient, ITenantSettingsRestClient
@@ -54,3 +55,4 @@ namespace CenterDevice.Rest.Clients.Tenant
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

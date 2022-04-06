@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents
 {
     [Serializable]
@@ -23,3 +24,4 @@ namespace CenterDevice.Rest.Clients.Documents
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

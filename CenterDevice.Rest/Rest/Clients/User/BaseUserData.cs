@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp.Deserializers;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.User
 {
     public class BaseUserData : UserData
@@ -22,3 +23,4 @@ namespace CenterDevice.Rest.Clients.User
         public bool? TechnicalUser { get; set; }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

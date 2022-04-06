@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Folders
 {
     public static class FolderFields
@@ -52,3 +53,4 @@ namespace CenterDevice.Rest.Clients.Folders
         PATH, HAS_SUBFOLDERS, SHARINGS
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

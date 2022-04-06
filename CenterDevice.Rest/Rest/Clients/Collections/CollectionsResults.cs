@@ -4,6 +4,7 @@ using RestSharp.Deserializers;
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Collections
 {
     public class CollectionsResults
@@ -95,3 +96,4 @@ namespace CenterDevice.Rest.Clients.Collections
         public bool Archived => ArchivedDate != null;
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

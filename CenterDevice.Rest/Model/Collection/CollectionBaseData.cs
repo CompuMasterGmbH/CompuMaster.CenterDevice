@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Model.Collection
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Model.Collection
 {
     public interface CollectionBaseData
     {
@@ -9,3 +10,4 @@
         bool Archived { get; }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

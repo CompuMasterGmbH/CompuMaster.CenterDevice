@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Model.Folder
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Model.Folder
 {
     public interface IFolderBaseData
     {
@@ -9,3 +10,4 @@
         bool? HasSubFolders { get; }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

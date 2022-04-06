@@ -1,5 +1,6 @@
 ﻿using RestSharp.Deserializers;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.User
 {
     public class UserData
@@ -55,3 +56,4 @@ namespace CenterDevice.Rest.Clients.User
         public const string LOGOUT = "logout";
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

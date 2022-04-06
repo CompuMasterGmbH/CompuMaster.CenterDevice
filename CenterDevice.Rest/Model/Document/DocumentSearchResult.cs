@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Model.Document
 {
     public class DocumentSearchResult
@@ -23,3 +24,4 @@ namespace CenterDevice.Model.Document
         public bool ExistsLocally { get; set; }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

@@ -1,5 +1,6 @@
 ﻿using System;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Documents.Metadata
 {
     public interface IDocumentBasicMetadata
@@ -25,3 +26,4 @@ namespace CenterDevice.Rest.Clients.Documents.Metadata
         string Owner { get; set; }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

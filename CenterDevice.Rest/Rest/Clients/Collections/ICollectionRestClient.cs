@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Rest.Clients.Collections
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Rest.Clients.Collections
 {
     public interface ICollectionRestClient
     {
@@ -17,3 +18,4 @@
         void RenameCollection(string userId, string collectionId, string newName);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

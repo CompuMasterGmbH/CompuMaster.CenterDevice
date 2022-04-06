@@ -1,4 +1,5 @@
-﻿namespace CenterDevice.Model.Registry
+﻿#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
+namespace CenterDevice.Model.Registry
 {
     public enum IconStatus : int
     {
@@ -11,3 +12,4 @@
         NONE = 0x6,
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

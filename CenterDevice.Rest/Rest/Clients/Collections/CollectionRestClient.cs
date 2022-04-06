@@ -7,6 +7,7 @@ using RestSharp;
 using System.Collections.Generic;
 using System.Net;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Collections
 {
     public class CollectionRestClient : CenterDeviceRestClient, ICollectionRestClient
@@ -169,3 +170,4 @@ namespace CenterDevice.Rest.Clients.Collections
         }
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element

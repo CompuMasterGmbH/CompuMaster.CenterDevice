@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Link
 {
     public interface IUploadLinksRestClient
@@ -10,3 +11,4 @@ namespace CenterDevice.Rest.Clients.Link
         UploadLinks GetAllUploadLinks(string userId);
     }
 }
+#pragma warning restore CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
