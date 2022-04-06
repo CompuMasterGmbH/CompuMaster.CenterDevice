@@ -98,8 +98,8 @@ jobs:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net5.0/TestResults.xml"
                   check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (${{matrix.os}})
-                  check_name: Unit Test Results (${{matrix.os}})
+                  comment_title: Unit Test Statistics (${{matrix.os}})  - NET 5.0
+                  check_name: Unit Test Results (${{matrix.os}})  - NET 5.0
                   report_individual_runs: true
 
             - name: Unit Test Results (Win/Mac) - NET 5.0
@@ -109,8 +109,8 @@ jobs:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net5.0/TestResults.xml"
                   check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (${{matrix.os}})
-                  check_name: Unit Test Results (${{matrix.os}})
+                  comment_title: Unit Test Statistics (${{matrix.os}})  - NET 5.0
+                  check_name: Unit Test Results (${{matrix.os}})  - NET 5.0
                   report_individual_runs: true
 
             - name: Unit Test Results (Linux) - NET Framework 4.8
@@ -120,8 +120,8 @@ jobs:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
                   check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (${{matrix.os}})
-                  check_name: Unit Test Results (${{matrix.os}})
+                  comment_title: Unit Test Statistics (${{matrix.os}}) - NET Framework 4.8
+                  check_name: Unit Test Results (${{matrix.os}}) - NET Framework 4.8
                   report_individual_runs: true
 
             - name: Unit Test Results (Win/Mac) - NET Framework 4.8
@@ -131,8 +131,8 @@ jobs:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
                   check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (${{matrix.os}})
-                  check_name: Unit Test Results (${{matrix.os}})
+                  comment_title: Unit Test Statistics (${{matrix.os}}) - NET Framework 4.8
+                  check_name: Unit Test Results (${{matrix.os}}) - NET Framework 4.8
                   report_individual_runs: true
 
 
