@@ -6,6 +6,11 @@
 * .NET Framework 4.8 or later
 * .NET Standard 2.0 or later
 
+## Clients supported
+
+* Scopevisio Teamwork (OpenScope)
+* MISSING: CenterDevice
+
 ## Current development status
 PLEASE NOTE: 
 * the library already works for some 3rd party labels which indirectly involve the CenterDevice API.
