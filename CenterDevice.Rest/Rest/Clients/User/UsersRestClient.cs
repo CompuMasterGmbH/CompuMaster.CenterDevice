@@ -30,7 +30,7 @@ namespace CenterDevice.Rest.Clients.User
         {
             if (userStatuses == null) throw new ArgumentNullException(nameof(userStatuses));
             if (userStatuses.Length == 0) throw new ArgumentException("At least one user status required", nameof(userStatuses));
-            var request = CreateRestRequest(URI_RESOURCE + "?status=" + string.Join(",", userStatuses), Method.Get, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + "?status=" + string.Join(",", userStatuses), Method.Get);
 
             var result = Execute<UserList<BaseUserData>>(GetOAuthInfo(userId), request);
             if (result.StatusCode == HttpStatusCode.NoContent)

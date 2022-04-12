@@ -23,7 +23,7 @@ namespace CenterDevice.Rest.Clients.Tenant
 
         public TenantFeatures GetTenantFeatures(string userId, string tenantId)
         {
-            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Get, ContentType.APPLICATION_JSON);
+            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, tenantId), Method.Get);
 
             var response = Execute<TenantFeatures>(GetOAuthInfo(userId), tenantRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<TenantFeatures>(HttpStatusCode.OK));

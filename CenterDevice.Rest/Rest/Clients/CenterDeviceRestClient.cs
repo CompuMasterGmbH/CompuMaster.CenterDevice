@@ -216,6 +216,7 @@ namespace CenterDevice.Rest.Clients
 
         protected RestRequest AddContentTypeHeader(RestRequest request, string contentType)
         {
+            if (request.Method == Method.Get) throw new ArgumentException("Adding header Content-Type not supported for GET requests", nameof(request));
             request.AddHeader(CONTENT_TYPE, contentType);
             return request;
         }

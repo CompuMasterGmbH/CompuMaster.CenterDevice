@@ -40,7 +40,7 @@ namespace CenterDevice.Rest.Clients.HealthCheck
 
             var testClient = new RestClient(options);
 
-            return testClient.ExecuteAsync(CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON)).Result.StatusCode == HttpStatusCode.OK;
+            return testClient.ExecuteAsync(CreateRestRequest(URI_RESOURCE, Method.Get)).Result.StatusCode == HttpStatusCode.OK;
         }
     }
 }

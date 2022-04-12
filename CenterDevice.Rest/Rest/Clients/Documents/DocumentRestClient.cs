@@ -49,7 +49,7 @@ namespace CenterDevice.Rest.Clients.Documents
                 path += ";" + RestApiConstants.VERSION + "=" + version;
             }
 
-            var metadataRequest = CreateRestRequest(path, Method.Get, ContentType.APPLICATION_JSON);
+            var metadataRequest = CreateRestRequest(path, Method.Get);
             metadataRequest.AddQueryParameter(RestApiConstants.INCLUDES, FieldUtils.GetFieldIncludes(typeof(T)));
 
             var result = Execute<T>(GetOAuthInfo(userId), metadataRequest);

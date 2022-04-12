@@ -42,7 +42,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public FoldersResponse GetFolders(string userId, string collectionId, string folderId, string documentId, string path, IEnumerable<string> ids, bool onlySharedFolders, bool onlyTopMost, string[] fields)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
             if (collectionId != null)
             {
                 folderRequest.AddQueryParameter(RestApiConstants.COLLECTION, collectionId);

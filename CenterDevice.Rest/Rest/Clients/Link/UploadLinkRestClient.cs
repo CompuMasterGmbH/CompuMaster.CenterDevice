@@ -31,7 +31,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public UploadLink GetLink(string userId, string linkId)
         {
-            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Get, ContentType.APPLICATION_JSON);
+            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Get);
 
             var result = Execute<UploadLink>(GetOAuthInfo(userId), linkRequest);
             UploadLink resultUnwrapped = UnwrapResponse(result, new StatusCodeResponseHandler<UploadLink>(HttpStatusCode.OK));

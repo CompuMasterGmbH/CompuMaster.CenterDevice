@@ -28,7 +28,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public CollectionsResults GetCollections(string userId, IEnumerable<string> ids, bool includeHasFolders)
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
             if (ids != null && ids.Any())
             {
                 searchRequest.AddQueryParameter(RestApiConstants.IDS, string.Join(",", ids));
@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public IEnumerable<string> GetCollectionIds(string userId, bool includePublic)
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
             searchRequest.AddQueryParameter(RestApiConstants.INCLUDE_PUBLIC, includePublic.ToString());
             searchRequest.AddQueryParameter(RestApiConstants.FIELDS, RestApiConstants.ID);
 

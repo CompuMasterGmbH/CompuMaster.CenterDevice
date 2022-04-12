@@ -124,7 +124,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public Collection GetCollection(string userId, string collectionId, RestRequestFields fields)
         {
-            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Get, ContentType.APPLICATION_JSON);
+            var collectionRequest = CreateRestRequest(URI_RESOURCE + "/" + collectionId, Method.Get);
 
             if (fields == RestRequestFields.ALL)
             {

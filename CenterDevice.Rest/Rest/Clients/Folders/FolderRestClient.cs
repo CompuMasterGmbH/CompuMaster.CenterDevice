@@ -24,7 +24,7 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public Folder GetFolder(string userId, string id, string[] fields)
         {
-            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.Get, ContentType.APPLICATION_JSON);
+            var folderRequest = CreateRestRequest(URI_RESOURCE + id, Method.Get);
             if (fields != null)
             {
                 folderRequest.AddQueryParameter(RestApiConstants.FIELDS, string.Join(",", fields));

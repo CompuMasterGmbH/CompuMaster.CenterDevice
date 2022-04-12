@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         private DocumentSearchResults<T> GetMetadata<T>(string userId, string collectionId, IEnumerable<string> documentIds, string folderId, IEnumerable<string> includes, DateTime? lastChangeTo, int offset, int rows) where T : new()
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
 
             if (collectionId != null)
             {

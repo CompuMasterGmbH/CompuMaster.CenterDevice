@@ -25,7 +25,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public Link GetLink(string userId, string linkId)
         {
-            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Get, ContentType.APPLICATION_JSON);
+            var linkRequest = CreateRestRequest(URI_RESOURCE + linkId, Method.Get);
 
             var result = Execute<Link>(GetOAuthInfo(userId), linkRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<Link>(HttpStatusCode.OK));
