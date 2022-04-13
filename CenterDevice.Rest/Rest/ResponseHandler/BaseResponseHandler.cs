@@ -15,12 +15,7 @@ namespace CenterDevice.Rest.ResponseHandler
 
         public virtual void ValidateResponse(RestResponse result)
         {
-            if (result.ErrorException != null && result.StatusCode == HttpStatusCode.NoContent && result.ErrorException is System.Runtime.Serialization.SerializationException)
-            {
-                result.ErrorMessage = null;
-                result.ErrorException = null;
-            }
-            else if (result.ErrorException != null)
+            if (result.ErrorException != null)
             {
                 if (result.ErrorException is SerializationException)
                 {
