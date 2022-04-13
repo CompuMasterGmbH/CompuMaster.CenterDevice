@@ -21,7 +21,7 @@ on:
 
     # Run every week on sunday to test Scopevisio API and CenterDevice API
     schedule:
-    - cron: "* * * * 6"
+    - cron: "0 23 * * 6"
 
 env:
     # Path to the solution file relative to the root of the project
