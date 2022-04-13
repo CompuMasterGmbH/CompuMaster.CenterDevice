@@ -8,6 +8,9 @@ Imports NUnit.Framework
         Try
             CheckResult = IOClient.TeamworkRestClient.UploadLinks.GetAllUploadLinks(IOClient.CurrentContextUserId)
             System.Console.WriteLine(CheckResult)
+            System.Console.WriteLine(CheckResult.UploadLinksList)
+            System.Console.WriteLine(CheckResult.UploadLinksList.Count)
+            System.Console.WriteLine(CheckResult.UploadLinksList.Item(0).Name & "=" & CheckResult.UploadLinksList.Item(0).Web)
             Assert.NotNull(CheckResult)
             Assert.NotNull(CheckResult.UploadLinksList)
             Assert.NotZero(CheckResult.UploadLinksList.Count)

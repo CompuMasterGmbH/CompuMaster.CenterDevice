@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.Clients.Documents.Metadata
     {
         public string Id { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.VERSION_DATE)]
+        [JsonPropertyName(RestApiConstants.VERSION_DATE)]
         public DateTime VersionDate { get; set; }
     }
 }

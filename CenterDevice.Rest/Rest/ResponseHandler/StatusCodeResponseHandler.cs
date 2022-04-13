@@ -19,7 +19,7 @@ namespace CenterDevice.Rest.ResponseHandler
             expectedStatus = statusCodes;
         }
 
-        override public void ValidateResponse(IRestResponse result)
+        override public void ValidateResponse(RestResponse result)
         {
             if (!expectedStatus.Contains(result.StatusCode))
             {
@@ -38,7 +38,7 @@ namespace CenterDevice.Rest.ResponseHandler
 
         public StatusCodeResponseHandler(params HttpStatusCode[] statusCode) : base(statusCode) { }
 
-        public T UnwrapResponse(IRestResponse<T> result)
+        public T UnwrapResponse(RestResponse<T> result)
         {
             return result.Data;
         }

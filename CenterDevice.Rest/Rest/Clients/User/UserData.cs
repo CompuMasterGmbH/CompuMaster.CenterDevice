@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.User
@@ -11,7 +11,7 @@ namespace CenterDevice.Rest.Clients.User
 
         public string Email { get; set; }
 
-        [DeserializeAs(Name = "tenant-id")]
+        [JsonPropertyName("tenant-id")]
         public string TenantId { get; set; }
 
         public bool IsDefault { get; set; }

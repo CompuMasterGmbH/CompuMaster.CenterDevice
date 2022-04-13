@@ -19,7 +19,7 @@ namespace CenterDevice.Rest.ResponseHandler
 
         private static readonly string MAX_DEPTH_OF_NESTED_FOLDERS_EXCEEDED_MESSAGE = "exceed the max depth";
 
-        public FolderCreationResponse UnwrapResponse(IRestResponse<FolderCreationResponse> result)
+        public FolderCreationResponse UnwrapResponse(RestResponse<FolderCreationResponse> result)
         {
             if (result.StatusCode == HttpStatusCode.Created)
             {

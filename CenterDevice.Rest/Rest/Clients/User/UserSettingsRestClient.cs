@@ -22,7 +22,7 @@ namespace CenterDevice.Rest.Clients.User
 
         public UserSettings GetUserSettings(string userId)
         {
-            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, userId), Method.GET, ContentType.APPLICATION_JSON);
+            var tenantRequest = CreateRestRequest(string.Format(URI_RESOURCE, userId), Method.Get);
 
             var response = Execute<UserSettings>(GetOAuthInfo(userId), tenantRequest);
             return UnwrapResponse(response, new StatusCodeResponseHandler<UserSettings>(HttpStatusCode.OK));

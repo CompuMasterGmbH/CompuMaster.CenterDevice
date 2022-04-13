@@ -52,9 +52,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-  <PackageReference Include="log4net" Version="2.0.12" />
+  <PackageReference Include="log4net" Version="2.0.14" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Ninject" Version="3.3.4.0" />
-    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="RestSharp" Version="107.3.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="System.Text.Json" Version="6.0.3" />
   </ItemGroup>
 </Project>

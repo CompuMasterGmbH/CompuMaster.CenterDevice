@@ -1,17 +1,17 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.Link
 {
     public class LinkCreationResponse
     {
-        [DeserializeAs(Name = "web")]
+        [JsonPropertyName("web")]
         public string Web { get; set; }
 
-        [DeserializeAs(Name = "download")]
+        [JsonPropertyName("download")]
         public string Download { get; set; }
 
-        [DeserializeAs(Name = "id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
     }
 }

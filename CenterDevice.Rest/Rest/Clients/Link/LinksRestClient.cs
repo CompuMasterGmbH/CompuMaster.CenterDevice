@@ -46,7 +46,7 @@ namespace CenterDevice.Rest.Clients.Link
                 throw new ArgumentException("Id and field need to be set.");
             }
 
-            var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.POST);
+            var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.Post);
             JObject parameters = CreateJsonBody(field, id, accessControl);
 
             createLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);

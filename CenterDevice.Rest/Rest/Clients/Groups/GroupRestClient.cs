@@ -20,7 +20,7 @@ namespace CenterDevice.Rest.Clients.Groups
 
         public Group GetGroup(string userId, string groupId)
         {
-            var request = CreateRestRequest(URI_RESOURCE + groupId, Method.GET, ContentType.APPLICATION_JSON);
+            var request = CreateRestRequest(URI_RESOURCE + groupId, Method.Get);
 
             var result = Execute<Group>(GetOAuthInfo(userId), request);
             return UnwrapResponse(result, new StatusCodeResponseHandler<Group>(HttpStatusCode.OK));

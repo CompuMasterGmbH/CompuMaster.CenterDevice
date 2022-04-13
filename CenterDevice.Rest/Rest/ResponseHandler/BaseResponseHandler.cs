@@ -13,7 +13,7 @@ namespace CenterDevice.Rest.ResponseHandler
     {
         private static ILog logger = LogManager.GetLogger(typeof(BaseResponseHandler));
 
-        public virtual void ValidateResponse(IRestResponse result)
+        public virtual void ValidateResponse(RestResponse result)
         {
             if (result.ErrorException != null && result.StatusCode == HttpStatusCode.NoContent && result.ErrorException is System.Runtime.Serialization.SerializationException)
             {
@@ -34,7 +34,7 @@ namespace CenterDevice.Rest.ResponseHandler
             }
         }
 
-        private static string HeadersToString(IList<Parameter> headers)
+        private static string HeadersToString(IReadOnlyCollection<HeaderParameter> headers)
         {
             string Result = null;
             foreach (Parameter p in headers)
@@ -50,12 +50,12 @@ namespace CenterDevice.Rest.ResponseHandler
             return Result;
         }
 
-        protected static RestClientException CreateDefaultException(HttpStatusCode expected, IRestResponse result)
+        protected static RestClientException CreateDefaultException(HttpStatusCode expected, RestResponse result)
         {
             return CreateDefaultException(new List<HttpStatusCode> { expected }, result);
         }
 
-        protected static RestClientException CreateDefaultException(List<HttpStatusCode> expected, IRestResponse result)
+        protected static RestClientException CreateDefaultException(List<HttpStatusCode> expected, RestResponse result)
         {
             var statusCode = result?.StatusCode;
             var content = result?.Content;
