@@ -1,6 +1,6 @@
 ﻿using CenterDevice.Model.Folder;
 using CenterDevice.Rest.Clients.Common;
-using RestSharp.Deserializers;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -14,11 +14,11 @@ namespace CenterDevice.Rest.Clients.Folders
 
         public string Collection { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.PATH)]
+        [JsonPropertyName(RestApiConstants.PATH)]
         public List<string> Path { get; set; }
 
         public List<Folder> SubFolders { get; set; }
-        [DeserializeAs(Name = RestApiConstants.HAS_SUBFOLDERS)]
+        [JsonPropertyName(RestApiConstants.HAS_SUBFOLDERS)]
         private bool? HasSubFoldersServerInfo { get; set; }
         public bool? HasSubFolders
         {

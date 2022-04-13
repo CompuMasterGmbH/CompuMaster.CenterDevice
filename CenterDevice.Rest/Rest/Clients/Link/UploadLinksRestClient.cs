@@ -31,7 +31,7 @@ namespace CenterDevice.Rest.Clients.Link
 
         public UploadLinks GetAllUploadLinks(string userId)
         {
-            var getUploadLinksRequest = CreateRestRequest(URI_RESOURCE, Method.GET);
+            var getUploadLinksRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
 
             var result = Execute<UploadLinks>(GetOAuthInfo(userId), getUploadLinksRequest);
             UploadLinks resultUnwrapped = UnwrapResponse(result, new StatusCodeResponseHandler<UploadLinks>(HttpStatusCode.OK));
@@ -59,7 +59,7 @@ namespace CenterDevice.Rest.Clients.Link
                 throw new ArgumentException("Id and field need to be set.");
             }
 
-            var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.POST);
+            var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.Post);
             JObject parameters = CreateJsonBody(collectionId, name, tags, expiryDate, maxDocuments, password, emailCreatorOnUpload);
 
             createLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);

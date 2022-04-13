@@ -43,7 +43,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public DocumentSearchResults<T> Search<T>(string userId, string query, List<string> collections, int offset, int rows)
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
 
             searchRequest.AddJsonBody(new { action = RestApiConstants.SEARCH, @params = new { @query = new { text = query }, filter = new { collections = collections }, offset = offset, rows = rows } });
 
@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         private DocumentSearchResults<T> GetMetadata<T>(string userId, string collectionId, IEnumerable<string> documentIds, string folderId, IEnumerable<string> includes, DateTime? lastChangeTo, int offset, int rows) where T : new()
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
 
             if (collectionId != null)
             {
@@ -99,7 +99,7 @@ namespace CenterDevice.Rest.Clients.Documents
                 NullValueHandling = NullValueHandling.Ignore
             };
 
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
 
             JObject parameters = JObject.FromObject(request, serializer);
             var fields = new JObject();
@@ -124,12 +124,15 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public UploadDocumentResponse UploadDocument(string userId, string filename, string path, DateTime? documentDate, List<string> collectionIds, List<string> folderIds, CancellationToken cancellationToken)
         {
-            RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.MULTIPART_FORM_DATA);
+            RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.MULTIPART_FORM_DATA);
             uploadRequest.AlwaysMultipartFormData = true;
-            uploadRequest.AddParameter(GenerateFormParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ContentType.APPLICATION_JSON));
+            //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
+            uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), "application/json"));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, path, streamWrapper, cancellationToken);
             uploadRequest.Timeout = int.MaxValue;
-            uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
+            //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
+            //-> TODO: re-activate or find workaround for following line:
+            //uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
 
             var result = Execute<UploadDocumentResponse>(GetOAuthInfo(userId), uploadRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<UploadDocumentResponse>(HttpStatusCode.Created));
@@ -137,7 +140,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public DeleteDocumentsResponse DeleteDocuments(string userId, List<string> ids)
         {
-            var deleteRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var deleteRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
             deleteRequest.AddJsonBody(new { action = RestApiConstants.DELETE, @params = new { documents = ids } });
 
             var result = Execute<DeleteDocumentsResponse>(GetOAuthInfo(userId), deleteRequest);
@@ -163,21 +166,11 @@ namespace CenterDevice.Rest.Clients.Documents
             body[RestApiConstants.ACTION] = RestApiConstants.MOVE;
             body[RestApiConstants.PARAMS] = parameters;
 
-            var moveRequest = CreateRestRequest(URI_RESOURCE, Method.POST, ContentType.APPLICATION_JSON);
+            var moveRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.APPLICATION_JSON);
             moveRequest.AddParameter(ContentType.APPLICATION_JSON, body.ToString(), ParameterType.RequestBody);
 
             var result = Execute(GetOAuthInfo(userId), moveRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
-        }
-
-        private Parameter GenerateFormParameter(string name, object value, string contentType)
-        {
-            Parameter parameter = new Parameter(name, value, contentType, ParameterType.RequestBody);
-            //parameter.Name = name;
-            //parameter.Value = value;
-            //parameter.ContentType = contentType;
-            //parameter.Type = ParameterType.RequestBody;
-            return parameter;
         }
 
         private string GenerateDocumentUploadJson(string filename, string fileFullpath, DateTime? documentDate, List<string> collectionIds, List<string> folderIds)

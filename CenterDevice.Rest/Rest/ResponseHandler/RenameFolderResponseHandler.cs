@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.ResponseHandler
     class RenameFolderResponseHandler : BaseResponseHandler
     {
 
-        public override void ValidateResponse(IRestResponse result)
+        public override void ValidateResponse(RestResponse result)
         {
             if (result.StatusCode != HttpStatusCode.OK)
             {

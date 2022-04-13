@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RestSharp.Deserializers;
+using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.User
@@ -19,7 +19,7 @@ namespace CenterDevice.Rest.Clients.User
             return FirstName + " " + LastName;
         }
 
-        [DeserializeAs(Name = RestApiConstants.TECHNICAL_USER)]
+        [JsonPropertyName(RestApiConstants.TECHNICAL_USER)]
         public bool? TechnicalUser { get; set; }
     }
 }

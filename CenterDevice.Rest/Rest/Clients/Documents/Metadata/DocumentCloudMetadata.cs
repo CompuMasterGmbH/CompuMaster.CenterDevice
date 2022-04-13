@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -8,7 +8,7 @@ namespace CenterDevice.Rest.Clients.Documents.Metadata
     {
         public List<string> Locks { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.LOCKED_BY)]
+        [JsonPropertyName(RestApiConstants.LOCKED_BY)]
         public string LockedBy { get; set; }
     }
 }

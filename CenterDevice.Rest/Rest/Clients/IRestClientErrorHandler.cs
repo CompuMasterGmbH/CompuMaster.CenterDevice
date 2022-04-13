@@ -6,7 +6,7 @@ namespace CenterDevice.Rest.Clients
 {
     public interface IRestClientErrorHandler
     {
-        void ValidateResponse(IRestResponse result);
+        void ValidateResponse(RestResponse result);
         OAuthInfo RefreshToken(OAuthInfo oAuthInfo);
     }
 }

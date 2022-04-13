@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +17,7 @@ namespace CenterDevice.Rest.Utils
             {
                 if (property.CanWrite)
                 {
-                    var attribute = (DeserializeAsAttribute)Attribute.GetCustomAttribute(property, typeof(DeserializeAsAttribute));
+                    var attribute = (JsonPropertyNameAttribute)Attribute.GetCustomAttribute(property, typeof(JsonPropertyNameAttribute));
                     if (attribute != null)
                     {
                         yield return attribute.Name;

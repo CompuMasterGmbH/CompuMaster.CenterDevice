@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
 namespace CenterDevice.Rest.Clients.User
@@ -7,7 +7,7 @@ namespace CenterDevice.Rest.Clients.User
     {
         public LocaleSettings Locale { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.TENANT_SETTINGS)]
+        [JsonPropertyName(RestApiConstants.TENANT_SETTINGS)]
         public UserTenantSettings TenantSettings { get; set; }
     }
 

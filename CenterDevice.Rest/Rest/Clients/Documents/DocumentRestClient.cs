@@ -49,7 +49,7 @@ namespace CenterDevice.Rest.Clients.Documents
                 path += ";" + RestApiConstants.VERSION + "=" + version;
             }
 
-            var metadataRequest = CreateRestRequest(path, Method.GET, ContentType.APPLICATION_JSON);
+            var metadataRequest = CreateRestRequest(path, Method.Get);
             metadataRequest.AddQueryParameter(RestApiConstants.INCLUDES, FieldUtils.GetFieldIncludes(typeof(T)));
 
             var result = Execute<T>(GetOAuthInfo(userId), metadataRequest);
@@ -132,7 +132,7 @@ namespace CenterDevice.Rest.Clients.Documents
             }
             path += ";preview=" + size.ToApiParameter() + ";pages=1?wait-for-generation=10&include-error-info=false";
 
-            HttpWebRequest httpWebRequest = CreateDownloadRequest(userId, null, new Uri(new Uri(GetBaseAddress()), path));
+            HttpWebRequest httpWebRequest = CreateDownloadRequest(userId, null, new Uri(new Uri(CustomOptionBaseAddress), path));
             httpWebRequest.Accept = "image/png, image/jpeg";
             return httpWebRequest;
         }
@@ -159,7 +159,7 @@ namespace CenterDevice.Rest.Clients.Documents
             {
                 path += ";" + RestApiConstants.VERSION + "=" + version;
             }
-            return new Uri(new Uri(GetBaseAddress()), path);
+            return new Uri(new Uri(CustomOptionBaseAddress), path);
         }
 
         private void ValidateResponse(HttpWebResponse webResponse, string userId, long? range)
@@ -185,25 +185,17 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public NewVersionUploadResponse UploadNewVersion(string userId, string id, string filename, string filepath, CancellationToken token)
         {
-            RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.MULTIPART_FORM_DATA);
+            RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.MULTIPART_FORM_DATA);
             newVersionRequest.AlwaysMultipartFormData = true;
-            newVersionRequest.AddParameter(GenerateFormParameter("metadata", GetMetadata(filename, filepath), ContentType.APPLICATION_JSON));
+            newVersionRequest.AddParameter(JsonParameter.CreateParameter("metadata", GetMetadata(filename, filepath), ParameterType.RequestBody));
             DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", filepath, streamWrapper, token);
             newVersionRequest.Timeout = int.MaxValue;
-            newVersionRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
+            //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
+            //-> TODO: re-activate or find workaround for following line:
+            //newVersionRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), newVersionRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<NewVersionUploadResponse>(HttpStatusCode.Created));
-        }
-
-        private Parameter GenerateFormParameter(string name, object value, string contentType)
-        {
-            Parameter parameter = new Parameter(name, value, contentType, ParameterType.RequestBody);
-            //parameter.Name = name;
-            //parameter.Value = value;
-            //parameter.ContentType = contentType;
-            //parameter.Type = ParameterType.RequestBody;
-            return parameter;
         }
 
         private string GetMetadata(string filename, string fileFullpath)
@@ -213,7 +205,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public NewVersionUploadResponse RenameDocument(string userId, string id, string filename)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.RENAME, @params = new { filename = filename } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -222,7 +214,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public void AddLock(string userId, string id)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.ADD_LOCK, @params = new { locks = new string[] { RestApiConstants.CREATE_NEW_VERSION } } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -231,7 +223,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public void RemoveLock(string userId, string id)
         {
-            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.POST, ContentType.APPLICATION_JSON);
+            RestRequest renameRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.APPLICATION_JSON);
             renameRequest.AddJsonBody(new { action = RestApiConstants.REMOVE_LOCK, @params = new { locks = new string[] { RestApiConstants.CREATE_NEW_VERSION } } });
 
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), renameRequest);
@@ -250,7 +242,7 @@ namespace CenterDevice.Rest.Clients.Documents
 
         public DeleteDocumentsResponse DeleteDocument(string userId, string documentId)
         {
-            RestRequest delete = CreateRestRequest(URI_RESOURCE + documentId, Method.DELETE, ContentType.APPLICATION_JSON);
+            RestRequest delete = CreateRestRequest(URI_RESOURCE + documentId, Method.Delete, ContentType.APPLICATION_JSON);
 
             var result = Execute<DeleteDocumentsResponse>(GetOAuthInfo(userId), delete);
             return UnwrapResponse(result, new StatusCodeResponseHandler<DeleteDocumentsResponse>(new List<HttpStatusCode> { HttpStatusCode.OK, HttpStatusCode.NoContent }));

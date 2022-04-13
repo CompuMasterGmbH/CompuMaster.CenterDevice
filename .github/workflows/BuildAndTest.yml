@@ -36,6 +36,10 @@ env:
 jobs:
     test:
         #needs: build
+        
+        # Prevent concurrent job runners changing the very same data on the remote DMS test server
+        concurrency: teamwork_test_server
+        
         runs-on: ${{ matrix.os }}
 
         strategy:
@@ -119,7 +123,7 @@ jobs:
                   check_name: Unit Test Results (${{matrix.os}})  - NET 5.0
                   report_individual_runs: true
 
-            - name: Unit Test Results (Linux) - NET Framework 4.8
+            - name: Publish Unit Test Results (Linux) - NET Framework 4.8
               uses: EnricoMi/publish-unit-test-result-action@v1
               if: always() && startsWith(matrix.os, 'ubuntu')
               with:
@@ -130,7 +134,7 @@ jobs:
                   check_name: Unit Test Results (${{matrix.os}}) - NET Framework 4.8
                   report_individual_runs: true
 
-            - name: Unit Test Results (Win/Mac) - NET Framework 4.8
+            - name: Publish Unit Test Results (Win/Mac) - NET Framework 4.8
               uses: EnricoMi/publish-unit-test-result-action/composite@v1
               if: always() && (!(startsWith(matrix.os, 'ubuntu')))
               with:

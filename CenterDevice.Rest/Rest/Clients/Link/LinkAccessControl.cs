@@ -1,4 +1,4 @@
-﻿using RestSharp.Deserializers;
+﻿using System.Text.Json.Serialization;
 using System;
 
 #pragma warning disable CS1591 // Fehledes XML-Kommentar für öffentlich sichtbaren Typ oder Element
@@ -6,16 +6,16 @@ namespace CenterDevice.Rest.Clients.Link
 {
     public class LinkAccessControl
     {
-        [DeserializeAs(Name = RestApiConstants.EXPIRY_DATE)]
+        [JsonPropertyName(RestApiConstants.EXPIRY_DATE)]
         public DateTime? ExpiryDate { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.MAX_DOWNLOADS)]
+        [JsonPropertyName(RestApiConstants.MAX_DOWNLOADS)]
         public int? MaxDownloads { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.PASSWORD)]
+        [JsonPropertyName(RestApiConstants.PASSWORD)]
         public string Password { get; set; }
 
-        [DeserializeAs(Name = RestApiConstants.VIEW_ONLY)]
+        [JsonPropertyName(RestApiConstants.VIEW_ONLY)]
         public bool ViewOnly { get; set; }
 
         public override int GetHashCode()

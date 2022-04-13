@@ -7,7 +7,7 @@ namespace CenterDevice.Rest.ResponseHandler
 {
     public class RenameDocumentResponseHandler: BaseResponseHandler, DataResponseHandler<NewVersionUploadResponse>
     {
-        public NewVersionUploadResponse UnwrapResponse(IRestResponse<NewVersionUploadResponse> result)
+        public NewVersionUploadResponse UnwrapResponse(RestResponse<NewVersionUploadResponse> result)
         {
             if (result.StatusCode == HttpStatusCode.NoContent)
             {

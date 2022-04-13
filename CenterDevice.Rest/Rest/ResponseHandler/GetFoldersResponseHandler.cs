@@ -9,7 +9,7 @@ namespace CenterDevice.Rest.ResponseHandler
 {
     public class GetFoldersResponseHandler : BaseResponseHandler, DataResponseHandler<FoldersResponse>
     {
-        public FoldersResponse UnwrapResponse(IRestResponse<FoldersResponse> result)
+        public FoldersResponse UnwrapResponse(RestResponse<FoldersResponse> result)
         {
             if (result.StatusCode == HttpStatusCode.NoContent)
             {

@@ -28,7 +28,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public CollectionsResults GetCollections(string userId, IEnumerable<string> ids, bool includeHasFolders)
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
             if (ids != null && ids.Any())
             {
                 searchRequest.AddQueryParameter(RestApiConstants.IDS, string.Join(",", ids));
@@ -52,7 +52,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public CreateCollectionResponse CreateCollection(OAuthInfo oAuthInfo, string collectionName)
         {
-            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE, Method.POST);
+            var createCollectionsRequest = CreateRestRequest(URI_RESOURCE, Method.Post);
 
             createCollectionsRequest.AddJsonBody(new { name = collectionName });
 
@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Collections
 
         public IEnumerable<string> GetCollectionIds(string userId, bool includePublic)
         {
-            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.GET, ContentType.APPLICATION_JSON);
+            var searchRequest = CreateRestRequest(URI_RESOURCE, Method.Get);
             searchRequest.AddQueryParameter(RestApiConstants.INCLUDE_PUBLIC, includePublic.ToString());
             searchRequest.AddQueryParameter(RestApiConstants.FIELDS, RestApiConstants.ID);
 
