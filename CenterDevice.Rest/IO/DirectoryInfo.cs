@@ -663,12 +663,12 @@ namespace CenterDevice.IO
                 {
                     foreach (DirectoryInfo subDir in this.getDirectories)
                     {
-                        result += "\r\n" + Indent(subDir.ToStringListing(recursive, includeFiles));
+                        result += System.Environment.NewLine + Indent(subDir.ToStringListing(recursive, includeFiles));
                     }
                 }
                 else
                 {
-                    result += "\r\n" + Indent("[Dirs:?]" + this.ioClient.Paths.DirectorySeparatorChar);
+                    result += System.Environment.NewLine + Indent("[Dirs:?]" + this.ioClient.Paths.DirectorySeparatorChar);
                 }
                 if (includeFiles)
                 {
@@ -677,14 +677,14 @@ namespace CenterDevice.IO
                         foreach (FileInfo file in this.getFiles)
                         {
                             if (file.HasCollidingDuplicateFile)
-                                result += "\r\n" + Indent(file.FileName + " [v" + file.Version + ", id " + file.ID.Substring(file.ID.Length - 4) + "]");
+                                result += System.Environment.NewLine + Indent(file.FileName + " [v" + file.Version + ", id " + file.ID.Substring(file.ID.Length - 4) + "]");
                             else
-                                result += "\r\n" + Indent(file.FileName + " [v" + file.Version + "]");
+                                result += System.Environment.NewLine + Indent(file.FileName + " [v" + file.Version + "]");
                         }
                     }
                     else
                     {
-                        result += "\r\n" + Indent("[Files:?]");
+                        result += System.Environment.NewLine + Indent("[Files:?]");
                     }
                 }
             }
