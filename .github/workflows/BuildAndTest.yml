@@ -39,7 +39,9 @@ jobs:
         runs-on: ${{ matrix.os }}
 
         strategy:
-            fail-fast: false
+            # test mights fail in run simultaneously because of preparation and cleanup of test file on the very same DMS space
+            maxParallel: 1
+            fail-fast: true
             matrix:
                 os: [windows-latest, ubuntu-latest, macos-latest]
                 include:
