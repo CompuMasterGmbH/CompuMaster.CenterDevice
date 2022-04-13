@@ -30,4 +30,26 @@ Imports System.Reflection
         Return New CompuMaster.Scopevisio.Teamwork.TeamworkIOClient(customerno, username, password)
     End Function
 
+
+    ''' <summary>
+    ''' Indent a string
+    ''' </summary>
+    ''' <param name="value"></param>
+    ''' <returns></returns>
+    Protected Shared Function Indent(value As String) As String
+        If (String.IsNullOrWhiteSpace(value)) Then
+            Return String.Empty
+        Else
+            Dim Result As String = "    " + value.Replace(ControlChars.Lf, ControlChars.Lf & "    ")
+            If (Result.EndsWith(ControlChars.Lf & "    ")) Then
+                Result = Result.Substring(0, Result.Length - ((ControlChars.Lf & "    ").Length - 1))
+            End If
+            Return Result
+        End If
+    End Function
+
+    Protected Function TestAssembly() As System.Reflection.Assembly
+        Return System.Reflection.Assembly.GetExecutingAssembly
+    End Function
+
 End Class
