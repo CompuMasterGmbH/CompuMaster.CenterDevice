@@ -335,13 +335,4 @@ FullName=/Test/Summen- und Saldenliste/test.txt.txt
 
 ## Open file path - /Test/test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
 FullName=/Test/test.txt.txt
-
-## Open file path - /test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-Exception: System.IO.FileNotFoundException: File not found
-Dateiname: "/test.txt.txt"
-   bei CenterDevice.IO.DirectoryInfo.GetFile(String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 279.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNames, String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 223.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNamesWithFileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 209.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String path) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 194.
-   bei CenterDevice.SampleApp.Program.Main() in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.SampleApp\Program.cs:Zeile 139.
 ```
