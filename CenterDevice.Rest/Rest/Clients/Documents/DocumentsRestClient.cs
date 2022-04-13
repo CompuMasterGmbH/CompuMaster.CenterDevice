@@ -126,7 +126,8 @@ namespace CenterDevice.Rest.Clients.Documents
         {
             RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.MULTIPART_FORM_DATA);
             uploadRequest.AlwaysMultipartFormData = true;
-            uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
+            //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
+            uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), "application/json"));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, path, streamWrapper, cancellationToken);
             uploadRequest.Timeout = int.MaxValue;
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
