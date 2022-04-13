@@ -36,6 +36,9 @@ env:
 jobs:
     test:
         #needs: build
+        
+        concurrency: teamwork_test_server
+        
         runs-on: ${{ matrix.os }}
 
         strategy:
