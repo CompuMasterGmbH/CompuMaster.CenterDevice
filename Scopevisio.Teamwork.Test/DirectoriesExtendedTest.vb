@@ -3,25 +3,50 @@ Option Strict On
 
 Imports NUnit.Framework
 
-<TestFixture, NonParallelizable> Public Class DirectoriesTest
+<TestFixture, NonParallelizable> Public Class DirectoriesExtendedTest
     Inherits TestBase
 
-    <Test> Public Sub RootDirProperties()
-        Assert.AreEqual(True, Me.IOClient.RootDirectory.IsRootDirectory)
-        Assert.AreEqual(1, Me.IOClient.RootDirectory.Path.Count)
-        Assert.AreEqual("/", Me.IOClient.RootDirectory.Path(0))
-        Assert.AreEqual("/", Me.IOClient.RootDirectory.FullName)
-        Assert.AreEqual(Nothing, Me.IOClient.RootDirectory.Name)
-        Assert.AreEqual(Nothing, Me.IOClient.RootDirectory.FolderID)
-        Assert.AreEqual(Nothing, Me.IOClient.RootDirectory.CollectionID)
-        Assert.AreEqual(Nothing, Me.IOClient.RootDirectory.AssociatedCollection)
-        Assert.AreEqual(Nothing, Me.IOClient.RootDirectory.ParentDirectory)
-        Assert.AreEqual(False, Me.IOClient.RootDirectory.Public)
-        Assert.AreEqual(CenterDevice.IO.DirectoryInfo.DirectoryType.Collection, Me.IOClient.RootDirectory.Type)
-        Assert.NotZero(IOClient.RootDirectory.GetDirectories(0, False).Length)
+    Private Const RemoteTestDirPath As String = "ZZZ_UnitTests"
+
+    <OneTimeSetUp> Public Sub InitTests()
+        CleanupTestData()
+        'Create required test directories
+        Dim RequiredDirPath As String
+        RequiredDirPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste/2020"
+        If Me.IOClient.RootDirectory.DirectoryExists(RequiredDirPath) <> True Then
+            Me.IOClient.RootDirectory.CreateDirectoryStructure(RequiredDirPath)
+        End If
+        'Create required test file
+        Dim RequiredFileName As String
+        RequiredDirPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste/2020"
+        RequiredFileName = "test.txt.txt"
+        Dim Dir As CenterDevice.IO.DirectoryInfo
+        Dir = Me.IOClient.RootDirectory.OpenDirectoryPath(RequiredDirPath)
+        If Dir.FileExists(RequiredFileName) = False Then
+            Dir.UploadAndCreateNewFile(TestFileForUploadTests, RequiredFileName)
+        End If
     End Sub
 
+    <OneTimeTearDown> Public Sub CleanupTestData()
+        Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
+        Dim OpenedCleanupDir As CenterDevice.IO.DirectoryInfo
+        BaseTestPath = Me.IOClient.RootDirectory
+        If BaseTestPath.DirectoryExists(RemoteTestDirPath) Then
+            OpenedCleanupDir = BaseTestPath.OpenDirectoryPath(RemoteTestDirPath)
+            OpenedCleanupDir.Delete()
+        End If
+    End Sub
+
+    Protected Function TestFileForUploadTests() As String
+        Dim LocalFilePath As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Me.TestAssembly.Location), "TestFile.txt")
+        If System.IO.File.Exists(LocalFilePath) = False Then Throw New System.IO.FileNotFoundException("File not found: " & LocalFilePath)
+        Return LocalFilePath
+    End Function
+
     <Test> Public Sub RootDirBrowsing()
+
+        Me.IOClient.RootDirectory.ResetDirectoriesCache()
+        Me.IOClient.RootDirectory.ResetFilesCache()
 
         System.Console.WriteLine(ControlChars.CrLf & "## Initial directory listing - flat")
         System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(False, True))
@@ -78,13 +103,13 @@ Imports NUnit.Framework
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
-        OpenTestPath = "Test/Summen- und Saldenliste\2020/"
+        OpenTestPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste\2020/"
         System.Console.WriteLine(ControlChars.CrLf & "## Open directory path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
 
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
-        OpenTestPath = "Test/Summen- und Saldenliste\2020/test.txt.txt"
+        OpenTestPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste\2020/test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
 
         OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
@@ -93,57 +118,54 @@ Imports NUnit.Framework
         BaseTestPath = OpenedTestDir
         OpenTestPath = "test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
 
         OpenTestPath = "/"
         System.Console.WriteLine(ControlChars.CrLf & "## Open directory path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
         OpenTestPath = ""
         System.Console.WriteLine(ControlChars.CrLf & "## Open directory path - """ + OpenTestPath + """" + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
         OpenTestPath = "."
         System.Console.WriteLine(ControlChars.CrLf & "## Open directory path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
         OpenTestPath = ".."
         System.Console.WriteLine(ControlChars.CrLf & "## Open directory path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestDir.FullName)
 
         OpenTestPath = "test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
         OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
         System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
 
         OpenTestPath = "../test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
+        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
+                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                         End Sub)
 
-        OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-        System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
-
-        OpenTestPath = "/Test/test.txt.txt"
+        OpenTestPath = "/" & RemoteTestDirPath & "/Test/test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
-        OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-        System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
+                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                         End Sub)
 
         OpenTestPath = "/test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-
-        OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-        System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
+                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                         End Sub)
     End Sub
 
     <Test> Public Sub FileDetails()
@@ -153,7 +175,7 @@ Imports NUnit.Framework
         Dim OpenedTestFile As CenterDevice.IO.FileInfo
         BaseTestPath = Me.IOClient.RootDirectory
 
-        OpenTestPath = "Test/Summen- und Saldenliste\2020"
+        OpenTestPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste\2020"
         System.Console.WriteLine(ControlChars.CrLf & "## Directory listing for path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath)
         OpenedTestDir.GetDirectories(10, True)
@@ -162,20 +184,28 @@ Imports NUnit.Framework
         System.Console.WriteLine(OpenedTestDir.ToStringDetails())
 
         BaseTestPath = IOClient.RootDirectory
-        OpenTestPath = "Test/Summen- und Saldenliste\2020/test.txt.txt"
+        OpenTestPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste\2020/test.txt.txt"
         System.Console.WriteLine(ControlChars.CrLf & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
         OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
         System.Console.WriteLine(OpenedTestFile.ToStringDetails())
+        Assert.AreEqual("/" & RemoteTestDirPath & "/Test/Summen- und Saldenliste/2020/test.txt.txt", OpenedTestFile.FullName)
     End Sub
 
     <Test> Public Sub OpenDirectory()
-        Const ExistingDir As String = "Test/Summen- und Saldenliste\2020/"
+        Const ExistingDir As String = RemoteTestDirPath & "/Test/Summen- und Saldenliste\2020"
         Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
         Dim OpenedTestDir As CenterDevice.IO.DirectoryInfo
         BaseTestPath = Me.IOClient.RootDirectory
 
         OpenedTestDir = BaseTestPath.OpenDirectoryPath(ExistingDir)
-        Assert.AreEqual(ExistingDir, OpenedTestDir.FullName)
+        Assert.AreEqual("/" & ExistingDir.Replace("\", "/"), OpenedTestDir.FullName)
+
+        OpenedTestDir = BaseTestPath.OpenDirectoryPath(ExistingDir & "/")
+        Assert.AreEqual("/" & ExistingDir.Replace("\", "/"), OpenedTestDir.FullName)
+
+        OpenedTestDir = BaseTestPath.OpenDirectoryPath("/" & ExistingDir) 'test root with leading path separator "/"
+        Assert.AreEqual("/" & ExistingDir.Replace("\", "/"), OpenedTestDir.FullName)
+
         Assert.Catch(Of Exception)(Sub()
                                        OpenedTestDir = BaseTestPath.OpenDirectoryPath(ExistingDir & "DIR-NOT-EXISTING")
                                    End Sub)

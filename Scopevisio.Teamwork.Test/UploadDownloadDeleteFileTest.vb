@@ -6,12 +6,6 @@
     Private Const RemoteTestDirPath As String = "ZZZ_UnitTests"
     Private Const RemoteFileName As String = "UnitTest_TestFile.tmp"
 
-    Private Function TestFileForUploadTests() As String
-        Dim LocalFilePath As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Me.TestAssembly.Location), "TestFile.txt")
-        If System.IO.File.Exists(LocalFilePath) = False Then Throw New System.IO.FileNotFoundException("File not found: " & LocalFilePath)
-        Return LocalFilePath
-    End Function
-
     <SetUp> Public Sub InitTests()
         CleanupTestData()
         If Me.IOClient.RootDirectory.DirectoryExists(RemoteTestDirPath) <> True Then
@@ -21,16 +15,23 @@
 
     <TearDown> Public Sub CleanupTestData()
         Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
-        Dim OpenedTestDir As CenterDevice.IO.DirectoryInfo
+        Dim OpenedCleanupDir As CenterDevice.IO.DirectoryInfo
         BaseTestPath = Me.IOClient.RootDirectory
         If BaseTestPath.DirectoryExists(RemoteTestDirPath) Then
-            OpenedTestDir = BaseTestPath.OpenDirectoryPath(RemoteTestDirPath)
-            If (OpenedTestDir.FileExists(RemoteFileName)) Then
+            OpenedCleanupDir = BaseTestPath.OpenDirectoryPath(RemoteTestDirPath)
+            If (OpenedCleanupDir.FileExists(RemoteFileName)) Then
                 'Clean-up
-                CleanupRemoteFile(OpenedTestDir, RemoteFileName, False)
+                CleanupRemoteFile(OpenedCleanupDir, RemoteFileName, False)
             End If
+            OpenedCleanupDir.Delete()
         End If
     End Sub
+
+    Protected Function TestFileForUploadTests() As String
+        Dim LocalFilePath As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Me.TestAssembly.Location), "TestFile.txt")
+        If System.IO.File.Exists(LocalFilePath) = False Then Throw New System.IO.FileNotFoundException("File not found: " & LocalFilePath)
+        Return LocalFilePath
+    End Function
 
     <Test> Public Sub UploadDownload()
         Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
@@ -92,11 +93,6 @@
         System.Console.WriteLine("Deleting . . .")
         Assert.True(CleanupRemoteFile(OpenedTestDir, TransferTestFileName, True))
         System.Console.WriteLine(Indent("DONE!"))
-    End Sub
-
-    <Test> Public Sub RestSharpDeserializationOfNoContentResultWithEmptyString()
-        RestSharp.SimpleJson.DeserializeObject(Nothing)
-        RestSharp.SimpleJson.DeserializeObject("")
     End Sub
 
     ''' <summary>

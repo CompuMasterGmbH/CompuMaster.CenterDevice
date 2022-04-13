@@ -830,6 +830,24 @@ namespace CenterDevice.IO
             this.getDirectories = null; //force reload on next request
         }
 
+        /// <summary>
+        /// Create a new sub directory
+        /// </summary>
+        /// <param name="directoryPath"></param>
+        public void CreateDirectoryStructure(string directoryPath)
+        {
+            String[] DirLevels = directoryPath.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            if (DirLevels.Length == 0) return;
+            if (DirLevels[0] == "") throw new ArgumentException("Must not start with a directory separator char", nameof (directoryPath));
+            DirectoryInfo SubDir = this;
+            foreach (string dirName in  DirLevels)
+            {
+                if (dirName == "") throw new ArgumentException("Must not contain empty sub directory names", nameof(directoryPath));
+                if (!SubDir.DirectoryExists(dirName)) SubDir.CreateDirectory(dirName);
+                SubDir = SubDir.OpenDirectoryPath(dirName);
+            }
+        }
+
         public enum DirectoryType : byte
         {
             Folder = 1,
