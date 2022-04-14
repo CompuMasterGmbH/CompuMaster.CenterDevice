@@ -6,7 +6,7 @@ Imports NUnit.Framework
 <TestFixture, NonParallelizable> Public Class DirectoriesExtendedTest
     Inherits TestBase
 
-    Private Const RemoteTestDirPath As String = "ZZZ_UnitTests"
+    Private Const RemoteTestDirPath As String = "ZZZ_UnitTests_CenterDevice"
 
     <OneTimeSetUp> Public Sub InitTests()
         CleanupTestData()
@@ -209,6 +209,43 @@ Imports NUnit.Framework
         Assert.Catch(Of Exception)(Sub()
                                        OpenedTestDir = BaseTestPath.OpenDirectoryPath(ExistingDir & "DIR-NOT-EXISTING")
                                    End Sub)
+    End Sub
+
+    Private Sub CreateRemoteTestFolderIfNotExisting(remotePath As String)
+        Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
+        BaseTestPath = Me.IOClient.RootDirectory
+
+        'Lookup status (and fill caches)
+        BaseTestPath.DirectoryExists(remotePath)
+
+        'Create the folder
+        If BaseTestPath.DirectoryExists(remotePath) = False Then
+            BaseTestPath.CreateDirectory(remotePath)
+        End If
+
+        'Lookup status again and check that old caches don't exist
+        Assert.IsTrue(BaseTestPath.DirectoryExists(remotePath))
+    End Sub
+
+    Private Sub RemoveRemoteTestFolder(remotePath As String)
+        Dim BaseTestPath As CenterDevice.IO.DirectoryInfo
+        BaseTestPath = Me.IOClient.RootDirectory
+
+        'Lookup status (and fill caches)
+        Assert.IsTrue(BaseTestPath.DirectoryExists(remotePath))
+
+        'Delete the folder
+        BaseTestPath.OpenDirectoryPath(remotePath).Delete()
+
+        'Lookup status again and check that old caches don't exist
+        Assert.IsFalse(BaseTestPath.DirectoryExists(remotePath))
+
+    End Sub
+
+    <Test> Public Sub CreateCollectionOrFolderAndCleanup()
+        Const RemoteTestFolderName As String = "ZZZ_UnitTest_CenterDevice_TempDir"
+        Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderName)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderName)
     End Sub
 
 End Class
