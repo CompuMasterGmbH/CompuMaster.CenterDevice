@@ -44,6 +44,11 @@ Imports CenterDevice.Test.Tools
         Return LocalFilePath
     End Function
 
+    <Test> Public Sub RootDirWithDuplicateDirectories()
+        Assert.IsFalse(Me.IOClient.RootDirectory.ContainsCollidingDuplicateFiles)
+        Assert.IsFalse(Me.IOClient.RootDirectory.ContainsCollidingDuplicateDirectories)
+    End Sub
+
     <Test> Public Sub RootDirBrowsing()
 
         Me.IOClient.RootDirectory.ResetDirectoriesCache()

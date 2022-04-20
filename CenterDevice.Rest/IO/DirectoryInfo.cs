@@ -290,15 +290,46 @@ namespace CenterDevice.IO
             return this.getFiles;
         }
 
-        public bool? HasCollidingDuplicateFiles
+        [Obsolete("Use ContainsCollidingDuplicateFiles instead"), System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public bool? HasCollidingDuplicateFiles => this.ContainsCollidingDuplicateFiles;
+
+        /// <summary>
+        /// Are children files existing with the very same file name?
+        /// </summary>
+        public bool? ContainsCollidingDuplicateFiles
         {
             get
             {
-                if (this.getFiles != null)
+                if (this.IsRootDirectory)
+                {
+                    return false;
+                }
+                else if (this.getFiles != null)
                 {
                     foreach (FileInfo file in this.getFiles)
                     {
                         if (file.HasCollidingDuplicateFile)
+                            return true;
+                    }
+                    return false;
+                }
+                else
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Are children directories existing with the very same directory name?
+        /// </summary>
+        public bool? ContainsCollidingDuplicateDirectories
+        {
+            get
+            {
+                if (this.getDirectories != null)
+                {
+                    foreach (DirectoryInfo dir in this.getDirectories)
+                    {
+                        if (dir.HasCollidingDuplicateDirectory)
                             return true;
                     }
                     return false;
@@ -1045,6 +1076,22 @@ namespace CenterDevice.IO
         {
             this.ioClient.ApiClient.Link.UpdateLink(this.ioClient.CurrentAuthenticationContextUserID, linkId, settings);
             this.ParentDirectory.getDirectories = null; //force reload of directories with modified share setup
+        }
+
+        /// <summary>
+        /// Is there a directory collision because of multiple folders or collections created with equal names?
+        /// </summary>
+        public bool HasCollidingDuplicateDirectory
+        {
+            get
+            {
+                foreach (DirectoryInfo dir in this.parentDirectory.GetDirectories())
+                {
+                    if ((dir.CollectionID != this.CollectionID || dir.FolderID != this.FolderID) && (dir.Name == this.Name))
+                        return true;
+                }
+                return false;
+            }
         }
     }
 }
