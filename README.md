@@ -13,6 +13,12 @@
   * the library already works for some 3rd party labels which indirectly involve the CenterDevice API.
   * as per today, the library DOES NOT work as a pure CenterDevice client since the CenterDevice API lacks an adequate authentification process (API allows regular login only as web login)
 
+## Popular projects based on this project
+
+* [CompuMaster.Dms](https://github.com/CompuMasterGmbH/CompuMaster.Dms/)
+  *  an abstract DMS provider for multiple cloud systems aka DMS systems (WebDAV, OwnCloud, NextCloud, Scopevisio Teamwork, CenterDevice, or custom providers
+  *  and additionally a Windows.Forms UI for accessing and managing files, folders and shares
+
 ## Console sample application for Scopevisio Teamwork
 
 For accessing Scopevisio Teamwork, you can use above sample application, but use another IOClient for Teamwork:
