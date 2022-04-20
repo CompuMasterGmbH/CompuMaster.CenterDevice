@@ -13,9 +13,175 @@
   * the library already works for some 3rd party labels which indirectly involve the CenterDevice API.
   * as per today, the library DOES NOT work as a pure CenterDevice client since the CenterDevice API lacks an adequate authentification process (API allows regular login only as web login)
 
-## TODO - NOT YET WORKING - Getting Started
+## Console sample application for Scopevisio Teamwork
 
-### Console sample application for CenterDevice
+For accessing Scopevisio Teamwork, you can use above sample application, but use another IOClient for Teamwork:
+
+```C#
+string username = InputLine("username");
+string customerno = InputLine("customer no.");
+string password = InputLine("password");
+
+//Authorize initially with user credentials -> recieved access token will be saved for following requests
+OpenScopeApiClient OpenScopeClient = new OpenScopeApiClient();
+OpenScopeClient.AuthorizeWithUserCredentials(username, customerno, password);
+
+//Create teamwork rest client
+//CompuMaster.Scopevisio.CenterDeviceApi.TeamworkRestClient TeamworkRestClient = new CompuMaster.Scopevisio.CenterDeviceApi.TeamworkRestClient(OpenScopeClient);
+
+//Create IO client for CenterDevice or Scopevisio Teamwork 
+CompuMaster.Scopevisio.CenterDeviceApi.TeamworkIOClient IOClient = new CompuMaster.Scopevisio.CenterDeviceApi.TeamworkIOClient(OpenScopeClient);
+```
+
+## Output of sample application (browse directory parts of above code only)
+```text
+## Initial directory listing - flat
+/
+
+## Initial directory listing - recursive - without display of files
+/
+    [Dirs:?]/
+
+## Full directory listing - after GetDirectories(0)
+/
+    Test/
+        [Dirs:?]/
+        [Files:?]
+    Neue Sammlung/
+        [Dirs:?]/
+        [Files:?]
+    [Files:?]
+
+## Full directory listing - after GetDirectories(1)
+/
+    Test/
+        BWA/
+            [Dirs:?]/
+            [Files:?]
+        DirLevel 01/
+            [Dirs:?]/
+            [Files:?]
+        Summen- und Saldenliste/
+            [Dirs:?]/
+            [Files:?]
+        test.txt.txt
+    Neue Sammlung/
+        SubDir/
+            [Dirs:?]/
+            [Files:?]
+        test\/|?*:;,."_'@2.txt
+
+## Full directory listing - after GetDirectories(2)
+/
+    Test/
+        BWA/
+            2019/
+                [Dirs:?]/
+                [Files:?]
+            2020/
+                [Dirs:?]/
+                [Files:?]
+            bwa.dir
+            test.txt.txt
+        DirLevel 01/
+            DirLevel 02/
+                [Dirs:?]/
+                [Files:?]
+        Summen- und Saldenliste/
+            2019/
+                [Dirs:?]/
+                [Files:?]
+            2020/
+                [Dirs:?]/
+                [Files:?]
+            test.txt.txt
+        test.txt.txt
+    Neue Sammlung/
+        SubDir/
+            test.txt
+        test\/|?*:;,."_'@2.txt
+
+## Full directory listing - after GetDirectories(10)
+/
+    Test/
+        BWA/
+            2019/
+                bwa.2019.dir.txt
+                test.txt.txt
+            2020/
+                test.txt.txt
+            bwa.dir
+            test.txt.txt
+        DirLevel 01/
+            DirLevel 02/
+                DirLevel 03/
+                    DirLevel 04/
+                        DirLevel 05/
+                            DirLevel 06/
+                                test\/|?*:;,."_'@2.txt
+                            test.txt
+        Summen- und Saldenliste/
+            2019/
+                test.txt.txt
+            2020/
+                test.txt.txt
+            test.txt.txt
+        test.txt.txt
+    Neue Sammlung/
+        SubDir/
+            test.txt
+        test\/|?*:;,."_'@2.txt
+
+## Open directory path - / [Start: /]
+FullName=/
+
+## Open directory path - "" [Start: /]
+FullName=/
+
+## Open directory path - . [Start: /]
+FullName=/
+
+## Open directory path - Test/Summen- und Saldenliste\2020/ [Start: /]
+FullName=/Test/Summen- und Saldenliste/2020
+
+## Open file path - Test/Summen- und Saldenliste\2020/test.txt.txt [Start: /]
+FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
+
+## Open file path - test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
+
+## Open directory path - / [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/
+
+## Open directory path - "" [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste/2020
+
+## Open directory path - . [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste/2020
+
+## Open directory path - .. [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste
+
+## Open file path - test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
+
+## Open file path - ../test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/Summen- und Saldenliste/test.txt.txt
+
+## Open file path - /Test/test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
+FullName=/Test/test.txt.txt
+
+## Open file path - /test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
+Exception: System.IO.FileNotFoundException: File not found
+Dateiname: "/test.txt.txt"
+   bei CenterDevice.IO.DirectoryInfo.GetFile(String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 279.
+   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNames, String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 223.
+   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNamesWithFileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 209.
+   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String path) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 194.
+   bei CenterDevice.SampleApp.Program.Main() in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.SampleApp\Program.cs:Zeile 139.
+```
+
+## Console sample application for CenterDevice - NOT WORKING AS PURE CONSOLE APP - REQUIRES WEB LOGIN
 
 ```csharp
 using CompuMaster.Scopevisio.OpenApi;
@@ -178,170 +344,3 @@ namespace ConsoleSampleApp
 }
 ```
 
-### Console sample application for Scopevisio Teamwork
-
-For accessing Scopevisio Teamwork, you can use above sample application, but use another IOClient for Teamwork:
-
-```C#
-string username = InputLine("username");
-string customerno = InputLine("customer no.");
-string password = InputLine("password");
-
-//Authorize initially with user credentials -> recieved access token will be saved for following requests
-OpenScopeApiClient OpenScopeClient = new OpenScopeApiClient();
-OpenScopeClient.AuthorizeWithUserCredentials(username, customerno, password);
-
-//Create teamwork rest client
-//CompuMaster.Scopevisio.CenterDeviceApi.TeamworkRestClient TeamworkRestClient = new CompuMaster.Scopevisio.CenterDeviceApi.TeamworkRestClient(OpenScopeClient);
-
-//Create IO client for CenterDevice or Scopevisio Teamwork 
-CompuMaster.Scopevisio.CenterDeviceApi.TeamworkIOClient IOClient = new CompuMaster.Scopevisio.CenterDeviceApi.TeamworkIOClient(OpenScopeClient);
-```
-
-### Output of sample application (browse directory parts of above code only)
-```text
-## Initial directory listing - flat
-/
-
-## Initial directory listing - recursive - without display of files
-/
-    [Dirs:?]/
-
-## Full directory listing - after GetDirectories(0)
-/
-    Test/
-        [Dirs:?]/
-        [Files:?]
-    Neue Sammlung/
-        [Dirs:?]/
-        [Files:?]
-    [Files:?]
-
-## Full directory listing - after GetDirectories(1)
-/
-    Test/
-        BWA/
-            [Dirs:?]/
-            [Files:?]
-        DirLevel 01/
-            [Dirs:?]/
-            [Files:?]
-        Summen- und Saldenliste/
-            [Dirs:?]/
-            [Files:?]
-        test.txt.txt
-    Neue Sammlung/
-        SubDir/
-            [Dirs:?]/
-            [Files:?]
-        test\/|?*:;,."_'@2.txt
-
-## Full directory listing - after GetDirectories(2)
-/
-    Test/
-        BWA/
-            2019/
-                [Dirs:?]/
-                [Files:?]
-            2020/
-                [Dirs:?]/
-                [Files:?]
-            bwa.dir
-            test.txt.txt
-        DirLevel 01/
-            DirLevel 02/
-                [Dirs:?]/
-                [Files:?]
-        Summen- und Saldenliste/
-            2019/
-                [Dirs:?]/
-                [Files:?]
-            2020/
-                [Dirs:?]/
-                [Files:?]
-            test.txt.txt
-        test.txt.txt
-    Neue Sammlung/
-        SubDir/
-            test.txt
-        test\/|?*:;,."_'@2.txt
-
-## Full directory listing - after GetDirectories(10)
-/
-    Test/
-        BWA/
-            2019/
-                bwa.2019.dir.txt
-                test.txt.txt
-            2020/
-                test.txt.txt
-            bwa.dir
-            test.txt.txt
-        DirLevel 01/
-            DirLevel 02/
-                DirLevel 03/
-                    DirLevel 04/
-                        DirLevel 05/
-                            DirLevel 06/
-                                test\/|?*:;,."_'@2.txt
-                            test.txt
-        Summen- und Saldenliste/
-            2019/
-                test.txt.txt
-            2020/
-                test.txt.txt
-            test.txt.txt
-        test.txt.txt
-    Neue Sammlung/
-        SubDir/
-            test.txt
-        test\/|?*:;,."_'@2.txt
-
-## Open directory path - / [Start: /]
-FullName=/
-
-## Open directory path - "" [Start: /]
-FullName=/
-
-## Open directory path - . [Start: /]
-FullName=/
-
-## Open directory path - Test/Summen- und Saldenliste\2020/ [Start: /]
-FullName=/Test/Summen- und Saldenliste/2020
-
-## Open file path - Test/Summen- und Saldenliste\2020/test.txt.txt [Start: /]
-FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
-
-## Open file path - test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
-
-## Open directory path - / [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/
-
-## Open directory path - "" [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste/2020
-
-## Open directory path - . [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste/2020
-
-## Open directory path - .. [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste
-
-## Open file path - test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste/2020/test.txt.txt
-
-## Open file path - ../test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/Summen- und Saldenliste/test.txt.txt
-
-## Open file path - /Test/test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-FullName=/Test/test.txt.txt
-
-## Open file path - /test.txt.txt [Start: /Test/Summen- und Saldenliste/2020]
-Exception: System.IO.FileNotFoundException: File not found
-Dateiname: "/test.txt.txt"
-   bei CenterDevice.IO.DirectoryInfo.GetFile(String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 279.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNames, String fileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 223.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String[] directoryNamesWithFileName) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 209.
-   bei CenterDevice.IO.DirectoryInfo.OpenFilePath(String path) in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.Rest\IO\DirectoryInfo.cs:Zeile 194.
-   bei CenterDevice.SampleApp.Program.Main() in D:\GitHub-OpenSource-Externals+Backups\bierdeckel-automation\CenterDevice\CenterDevice.SampleApp\Program.cs:Zeile 139.
-```
