@@ -20,7 +20,7 @@ namespace CenterDevice.Rest.Clients.Link
         [JsonPropertyName(RestApiConstants.ACCESS_CONTROL)]
         public LinkAccessControl AccessControl { get; set; }
 
-        [JsonPropertyName(RestApiConstants.ACCESS_CONTROL)]
+        [JsonPropertyName(RestApiConstants.COLLECTION)]
         public string Collection { get; set; }
 
         [JsonPropertyName(RestApiConstants.VIEWS)]

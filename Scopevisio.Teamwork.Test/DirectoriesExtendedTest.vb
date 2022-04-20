@@ -422,11 +422,18 @@ Imports CenterDevice.Test.Tools
                     Me.IOClient.CurrentAuthenticationContextUserID, CreatedLink.Id, New CenterDevice.Rest.Clients.Link.LinkAccessControl() With {.ViewOnly = True, .Password = Guid.NewGuid.ToString("n")})
 
         'Test for success
+        Dim LinkDetails As CenterDevice.Rest.Clients.Link.Link = Me.IOClient.ApiClient.Link.GetLink(Me.IOClient.CurrentAuthenticationContextUserID, CreatedLink.Id)
+        Assert.NotNull(LinkDetails)
+        Assert.AreEqual(RemoteCollection.CollectionID, LinkDetails.Collection)
+        Assert.AreEqual(CreatedLink.Id, LinkDetails.Id)
+        System.Console.WriteLine("CHECKUP 1 by link: Collection ID " & RemoteCollection.CollectionID & " (" & RemoteTestFolderName & ") shared as view/download link with ID: " & SharedCollection.Link)
+
+        'Test for success
         SharedCollection = Me.IOClient.ApiClient.Collection.GetCollection(Me.IOClient.CurrentAuthenticationContextUserID, RemoteCollection.CollectionID)
         Assert.IsTrue(SharedCollection.HasLink)
         Assert.IsNotNull(SharedCollection.Link)
         Assert.IsNotEmpty(SharedCollection.Link)
-        System.Console.WriteLine("CHECKUP: Collection ID " & RemoteCollection.CollectionID & " (" & RemoteTestFolderName & ") shared as view/download link with ID: " & SharedCollection.Link)
+        System.Console.WriteLine("CHECKUP 2 by collection: Collection ID " & RemoteCollection.CollectionID & " (" & RemoteTestFolderName & ") shared as view/download link with ID: " & SharedCollection.Link)
 
         'Remove sharing again
         Me.IOClient.ApiClient.Link.DeleteLink(Me.IOClient.CurrentAuthenticationContextUserID, CreatedLink.Id)
