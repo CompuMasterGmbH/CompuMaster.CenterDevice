@@ -49,7 +49,7 @@ namespace CenterDevice.Rest.Clients.Link
             var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.Post);
             JObject parameters = CreateJsonBody(field, id, accessControl);
 
-            createLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            createLinkRequest.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<LinkCreationResponse>(GetOAuthInfo(userId), createLinkRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<LinkCreationResponse>(HttpStatusCode.Created));

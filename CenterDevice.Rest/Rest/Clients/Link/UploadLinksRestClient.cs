@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Link
             var createLinkRequest = CreateRestRequest(URI_RESOURCE, Method.Post);
             JObject parameters = CreateJsonBody(collectionId, name, tags, expiryDate, maxDocuments, password, emailCreatorOnUpload);
 
-            createLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            createLinkRequest.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<UploadLinkCreationResponse>(GetOAuthInfo(userId), createLinkRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<UploadLinkCreationResponse>(HttpStatusCode.Created));

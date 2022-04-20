@@ -41,7 +41,7 @@ namespace CenterDevice.Rest.Clients.Tenant
                     [RestApiConstants.FEATURE] = feature
                 }
             };
-            request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            request.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             RestResponse result = Execute(GetOAuthInfo(userId), request);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));

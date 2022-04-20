@@ -51,7 +51,7 @@ namespace CenterDevice.Rest.Clients.Folders
 #pragma warning restore IDE0028 // Initialisierung der Sammlung vereinfachen
             parameters[RestApiConstants.ACTION] = RestApiConstants.ERASE;
             parameters[RestApiConstants.PARAMS] = CreateEraseParameters(onlyOwnedDocuments);
-            eraseFolder.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            eraseFolder.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<FolderEraseResponse>(GetOAuthInfo(userId), eraseFolder);
             return UnwrapResponse(result, new StatusCodeResponseHandler<FolderEraseResponse>(new List<HttpStatusCode>() { HttpStatusCode.NoContent, HttpStatusCode.OK }));
@@ -90,7 +90,7 @@ namespace CenterDevice.Rest.Clients.Folders
 #pragma warning restore IDE0028 // Initialisierung der Sammlung vereinfachen
             parameters[RestApiConstants.ACTION] = RestApiConstants.REMOVE_DOCUMENTS;
             parameters[RestApiConstants.PARAMS] = removeDetails;
-            removeDocumentRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            removeDocumentRequest.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute(GetOAuthInfo(userId), removeDocumentRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));
@@ -152,7 +152,7 @@ namespace CenterDevice.Rest.Clients.Folders
 #pragma warning restore IDE0028 // Initialisierung der Sammlung vereinfachen
             parameters[RestApiConstants.ACTION] = sHARE;
             parameters[RestApiConstants.PARAMS] = sharingDetails;
-            shareFolder.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            shareFolder.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<SharingResponse>(GetOAuthInfo(userId), shareFolder);
             return UnwrapResponse(result, new StatusCodeResponseHandler<SharingResponse>(new List<HttpStatusCode>() { HttpStatusCode.NoContent, HttpStatusCode.OK }));

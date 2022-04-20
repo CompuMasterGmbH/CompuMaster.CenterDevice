@@ -62,7 +62,7 @@ namespace CenterDevice.Rest.Clients.Link
             if (password != null) parameters[RestApiConstants.PASSWORD] = password;
             if (emailCreatorOnUpload.HasValue) parameters[RestApiConstants.EMAIL_CREATOR_ON_UPLOAD] = emailCreatorOnUpload;
 
-            updateLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            updateLinkRequest.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<Link>(GetOAuthInfo(userId), updateLinkRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));

@@ -51,16 +51,32 @@ namespace CenterDevice.Rest.Clients.Collections
             var parameters = new JObject();
             parameters[RestApiConstants.ACTION] = RestApiConstants.ERASE;
             parameters[RestApiConstants.PARAMS] = CreateEraseParameters(onlyOwnedDocuments);
-            request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            request.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             return UnwrapResponse(Execute<CollectionEraseResponse>(GetOAuthInfo(userId), request), new StatusCodeResponseHandler<CollectionEraseResponse>(HttpStatusCode.NoContent, HttpStatusCode.OK));
         }
 
+        /// <summary>
+        /// Share a collection to additional users or groups
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="collectionId"></param>
+        /// <param name="users"></param>
+        /// <param name="groups"></param>
+        /// <returns>Null on success or data on failed elements</returns>
         public SharingResponse ShareCollection(string userId, string collectionId, IEnumerable<string> users, IEnumerable<string> groups)
         {
             return UpdateCollectionSharing(userId, collectionId, users, groups, RestApiConstants.SHARE);
         }
 
+        /// <summary>
+        /// Remove sharings from a collection
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="collectionId"></param>
+        /// <param name="users"></param>
+        /// <param name="groups"></param>
+        /// <returns>Null on success or data on failed elements</returns>
         public SharingResponse UnshareCollection(string userId, string collectionId, IEnumerable<string> users, IEnumerable<string> groups)
         {
             return UpdateCollectionSharing(userId, collectionId, users, groups, RestApiConstants.UNSHARE);
@@ -73,7 +89,7 @@ namespace CenterDevice.Rest.Clients.Collections
             var parameters = new JObject();
             parameters[RestApiConstants.ACTION] = sHARE;
             parameters[RestApiConstants.PARAMS] = CreateSharingParams(users, groups);
-            request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            request.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             return UnwrapResponse(Execute<SharingResponse>(GetOAuthInfo(userId), request), new StatusCodeResponseHandler<SharingResponse>(HttpStatusCode.NoContent, HttpStatusCode.OK));
         }
@@ -163,7 +179,7 @@ namespace CenterDevice.Rest.Clients.Collections
             {
                 [RestApiConstants.ACTION] = RestApiConstants.ARCHIVE
             };
-            request.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            request.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             RestResponse result = Execute(GetOAuthInfo(userId), request);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));

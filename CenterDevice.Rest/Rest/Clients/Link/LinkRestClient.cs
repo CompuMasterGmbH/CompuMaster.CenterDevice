@@ -46,7 +46,7 @@ namespace CenterDevice.Rest.Clients.Link
             var parameters = new JObject();
             parameters[RestApiConstants.ACCESS_CONTROL] = AccessControlConverter.ToJsonObject(accessControl);
 
-            updateLinkRequest.AddParameter(ContentType.APPLICATION_JSON, parameters.ToString(), ParameterType.RequestBody);
+            updateLinkRequest.AddStringBody(parameters.ToString(), ContentType.APPLICATION_JSON);
 
             var result = Execute<Link>(GetOAuthInfo(userId), updateLinkRequest);
             ValidateResponse(result, new StatusCodeResponseHandler(HttpStatusCode.NoContent));

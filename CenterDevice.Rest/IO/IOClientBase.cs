@@ -184,6 +184,11 @@ namespace CenterDevice.IO
 
         private string _CachedCurrentContextUserIdResult = null;
         private string _CachedCurrentContextUserIdForAuthUserId = null;
+
+        /// <summary>
+        /// The CenterDevice user ID of current context (= user ID as used for sharings, etc.)
+        /// </summary>
+        /// <returns></returns>
         public string CurrentContextUserId()
         {
             if (this._CachedCurrentContextUserIdForAuthUserId == this.CurrentAuthenticationContextUserID)
