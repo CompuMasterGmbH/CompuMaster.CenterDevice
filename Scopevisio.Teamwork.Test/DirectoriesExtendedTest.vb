@@ -18,10 +18,10 @@ Imports CenterDevice.Test.Tools
             Me.IOClient.RootDirectory.CreateDirectoryStructure(RequiredDirPath)
         End If
         'Create required test file
+        Dim Dir As CenterDevice.IO.DirectoryInfo
         Dim RequiredFileName As String
         RequiredDirPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste/2020"
         RequiredFileName = "test.txt.txt"
-        Dim Dir As CenterDevice.IO.DirectoryInfo
         Dir = Me.IOClient.RootDirectory.OpenDirectoryPath(RequiredDirPath)
         If Dir.FileExists(RequiredFileName) = False Then
             Dir.UploadAndCreateNewFile(TestFileForUploadTests, RequiredFileName)
@@ -42,6 +42,37 @@ Imports CenterDevice.Test.Tools
         Dim LocalFilePath As String = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Me.TestAssembly.Location), "TestFile.txt")
         If System.IO.File.Exists(LocalFilePath) = False Then Throw New System.IO.FileNotFoundException("File not found: " & LocalFilePath)
         Return LocalFilePath
+    End Function
+
+    <Test> Public Sub UploadNewFileByStream()
+        Dim RequiredDirPath As String
+        RequiredDirPath = RemoteTestDirPath & "/Test/Summen- und Saldenliste/2020"
+        Dim RequiredFileName As String
+        RequiredFileName = "test.by.streamupload.txt"
+        Dim Dir As CenterDevice.IO.DirectoryInfo
+        Dir = Me.IOClient.RootDirectory.OpenDirectoryPath(RequiredDirPath)
+
+        If Dir.FileExists(RequiredFileName) = False Then
+            Dir.Upload(Function() As System.IO.Stream
+                           Return GetDummyBinaryStream(1)
+                       End Function, RequiredFileName, IO.DirectoryInfo.UploadMode.DropExistingFileAndCreateNew)
+        End If
+        Assert.AreEqual(GetDummyBinaryData(1), ReadAllBytesFromStream(Dir.GetFile(RequiredFileName).Download()))
+
+        Dir.Upload(Function() As System.IO.Stream
+                       Return GetDummyBinaryStream(2)
+                   End Function, RequiredFileName, IO.DirectoryInfo.UploadMode.CreateNewVersion)
+        Assert.AreEqual(GetDummyBinaryData(2), ReadAllBytesFromStream(Dir.GetFile(RequiredFileName).Download()))
+
+        Assert.AreEqual(GetDummyBinaryData(2), ReadAllBytesFromStream(Dir.GetFile(RequiredFileName).Download(0))) ' 0 = latest version
+        Assert.AreEqual(GetDummyBinaryData(1), ReadAllBytesFromStream(Dir.GetFile(RequiredFileName).Download(1)))
+        Assert.AreEqual(GetDummyBinaryData(2), ReadAllBytesFromStream(Dir.GetFile(RequiredFileName).Download(2)))
+    End Sub
+
+    Private Function ReadAllBytesFromStream(stream As System.IO.Stream) As Byte()
+        Dim ms As New System.IO.MemoryStream()
+        stream.CopyTo(ms)
+        Return ms.ToArray
     End Function
 
     <Test> Public Sub RootDirWithDuplicateDirectories()
@@ -444,6 +475,14 @@ Imports CenterDevice.Test.Tools
         'Cleanup
         Me.RemoveRemoteTestFolder(RemoteTestFolderName, True)
     End Sub
+
+    Private Function GetDummyBinaryStream(individualValue As Byte) As System.IO.Stream
+        Return New System.IO.MemoryStream(GetDummyBinaryData(individualValue))
+    End Function
+
+    Private Function GetDummyBinaryData(individualValue As Byte) As Byte()
+        Return New Byte() {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 32, 33, 34, 35, 36, 37, individualValue}
+    End Function
 
     ''' <summary>
     ''' Test user share API

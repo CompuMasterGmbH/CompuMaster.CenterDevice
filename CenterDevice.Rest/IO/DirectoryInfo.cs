@@ -783,7 +783,7 @@ namespace CenterDevice.IO
             sb.AppendLine(this.Indent("NeedToOptIn=" + this.NeedToOptIn));
             sb.AppendLine(this.Indent("Public=" + this.Public));
             sb.AppendLine(this.Indent("Owner=" + this.Owner));
-            sb.AppendLine(this.Indent("HasCollidingDuplicateFiles=" + this.HasCollidingDuplicateFiles));
+            sb.AppendLine(this.Indent("HasCollidingDuplicateFiles=" + this.ContainsCollidingDuplicateFiles));
             sb.Append("}");
             return sb.ToString();
         }
@@ -832,6 +832,46 @@ namespace CenterDevice.IO
                 default:
                     throw new ArgumentOutOfRangeException(nameof(uploadMode));
             }
+            this.getFiles = null; //force reload on next request
+        }
+
+        public void Upload(System.Func<System.IO.Stream> fileDataStream, string fileName, UploadMode uploadMode)
+        {
+            switch (uploadMode)
+            {
+                case UploadMode.CreateNewFile:
+                    this.UploadAndCreateNewFile(fileDataStream, fileName);
+                    break;
+                case UploadMode.CreateNewVersion:
+                    this.GetFile(fileName).UploadNewVersion(fileDataStream);
+                    break;
+                case UploadMode.CreateNewVersionOrNewFile:
+                    if (!this.FileExists(fileName))
+                        this.UploadAndCreateNewFile(fileDataStream, fileName);
+                    else
+                        this.GetFile(fileName).UploadNewVersion(fileDataStream);
+                    break;
+                case UploadMode.DropExistingFileAndCreateNew:
+                    while (this.FileExists(fileName))
+                        this.GetFile(fileName).Delete();
+                    this.UploadAndCreateNewFile(fileDataStream, fileName);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(uploadMode));
+            }
+            this.getFiles = null; //force reload on next request
+        }
+
+        /// <summary>
+        /// Upload a file (an existing file will remain as collision file)
+        /// </summary>
+        /// <param name="fileDataStream"></param>
+        /// <param name="fileName"></param>
+        public void UploadAndCreateNewFile(System.Func<System.IO.Stream> fileDataStream, string fileName)
+        {
+            if (this.IsRootDirectory)
+                throw new System.InvalidOperationException("Upload to root directory not allowed");
+            this.ioClient.ApiClient.Documents.UploadDocument(this.ioClient.CurrentAuthenticationContextUserID, fileName, fileDataStream, this.CollectionID ?? this.ParentCollection.CollectionID, this.FolderID, System.Threading.CancellationToken.None);
             this.getFiles = null; //force reload on next request
         }
 

@@ -213,6 +213,16 @@ namespace CenterDevice.IO
         }
 
         /// <summary>
+        /// Overwrite the file with a new version
+        /// </summary>
+        /// <param name="fileDataStream"></param>
+        public void UploadNewVersion(System.Func<System.IO.Stream> fileDataStream)
+        {
+            this.ioClient.ApiClient.Document.UploadNewVersion(this.ioClient.CurrentAuthenticationContextUserID, this.ID, this.FileName, fileDataStream, System.Threading.CancellationToken.None);
+            this.parentDirectory.getFiles = null; //force reload on next request since changed file properties must be reloaded
+        }
+
+        /// <summary>
         /// Remove the file
         /// </summary>
         public void Delete()

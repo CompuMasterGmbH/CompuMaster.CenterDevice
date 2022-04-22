@@ -183,11 +183,16 @@ namespace CenterDevice.Rest.Clients.Documents
             return UploadNewVersion(userId, id, filename, filepath, new CancellationToken());
         }
 
+        public NewVersionUploadResponse UploadNewVersion(string userId, string id, string filename, System.Func<Stream> fileDataStream)
+        {
+            return UploadNewVersion(userId, id, filename, fileDataStream, new CancellationToken());
+        }
+
         public NewVersionUploadResponse UploadNewVersion(string userId, string id, string filename, string filepath, CancellationToken token)
         {
             RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.MULTIPART_FORM_DATA);
             newVersionRequest.AlwaysMultipartFormData = true;
-            newVersionRequest.AddParameter(JsonParameter.CreateParameter("metadata", GetMetadata(filename, filepath), ParameterType.RequestBody));
+            newVersionRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GetMetadata(filename, filepath), "application/json"));
             DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", filepath, streamWrapper, token);
             newVersionRequest.Timeout = int.MaxValue;
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
@@ -197,7 +202,25 @@ namespace CenterDevice.Rest.Clients.Documents
             var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), newVersionRequest);
             return UnwrapResponse(result, new StatusCodeResponseHandler<NewVersionUploadResponse>(HttpStatusCode.Created));
         }
+        public NewVersionUploadResponse UploadNewVersion(string userId, string id, string filename, System.Func<Stream> fileDataStream, CancellationToken token)
+        {
+            RestRequest newVersionRequest = CreateRestRequest(URI_RESOURCE + id, Method.Post, ContentType.MULTIPART_FORM_DATA);
+            newVersionRequest.AlwaysMultipartFormData = true;
+            newVersionRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GetMetadata(filename, fileDataStream), "application/json"));
+            DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", fileDataStream, streamWrapper, token);
+            newVersionRequest.Timeout = int.MaxValue;
+            //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
+            //-> TODO: re-activate or find workaround for following line:
+            //newVersionRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
 
+            var result = Execute<NewVersionUploadResponse>(GetOAuthInfo(userId), newVersionRequest);
+            return UnwrapResponse(result, new StatusCodeResponseHandler<NewVersionUploadResponse>(HttpStatusCode.Created));
+        }
+
+        private string GetMetadata(string filename, System.Func<Stream> fileDataStream)
+        {
+            return "{ metadata: { document: {filename: \"" + filename + "\", size: \"" + fileDataStream().Length + "\"} } }";
+        }
         private string GetMetadata(string filename, string fileFullpath)
         {
             return "{ metadata: { document: {filename: \"" + filename + "\", size: \"" + GetFileSize(fileFullpath) + "\"} } }";

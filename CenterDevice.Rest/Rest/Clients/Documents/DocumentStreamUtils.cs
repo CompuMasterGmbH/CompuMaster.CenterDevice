@@ -8,6 +8,12 @@ namespace CenterDevice.Rest.Clients.Documents
     {
         private const int DEFAULT_COPY_BUFFER_SIZE = 81920;
 
+        internal static void AddFileToUpload(RestRequest uploadRequest, string fileName, System.Func<Stream> fileDataStream, IStreamWrapper streamWrapper, CancellationToken cancellationToken)
+        {
+            //WORKAROUND: upload works, but upload cancellation as well as upload speed control not available
+            uploadRequest.AddFile(fileName, fileDataStream, fileName);
+        }
+
         internal static void AddFileToUpload(RestRequest uploadRequest, string fileName, string filePath, IStreamWrapper streamWrapper, CancellationToken cancellationToken)
         {
             //WORKAROUND: upload works, but upload cancellation as well as upload speed control not available

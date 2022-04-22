@@ -122,6 +122,11 @@ namespace CenterDevice.Rest.Clients.Documents
             return UploadDocument(userId, filename, path, null, new List<string>() { collectionId }, new List<string>() { parentId }, cancellationToken);
         }
 
+        public UploadDocumentResponse UploadDocument(string userId, string filename, System.Func<Stream> fileStreamData, string collectionId, string parentId, CancellationToken cancellationToken)
+        {
+            return UploadDocument(userId, filename, fileStreamData, null, new List<string>() { collectionId }, new List<string>() { parentId }, cancellationToken);
+        }
+
         public UploadDocumentResponse UploadDocument(string userId, string filename, string path, DateTime? documentDate, List<string> collectionIds, List<string> folderIds, CancellationToken cancellationToken)
         {
             RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.MULTIPART_FORM_DATA);
@@ -129,6 +134,22 @@ namespace CenterDevice.Rest.Clients.Documents
             //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
             uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), "application/json"));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, path, streamWrapper, cancellationToken);
+            uploadRequest.Timeout = int.MaxValue;
+            //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
+            //-> TODO: re-activate or find workaround for following line:
+            //uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
+
+            var result = Execute<UploadDocumentResponse>(GetOAuthInfo(userId), uploadRequest);
+            return UnwrapResponse(result, new StatusCodeResponseHandler<UploadDocumentResponse>(HttpStatusCode.Created));
+        }
+
+        public UploadDocumentResponse UploadDocument(string userId, string filename, System.Func<Stream> fileStreamData, DateTime? documentDate, List<string> collectionIds, List<string> folderIds, CancellationToken cancellationToken)
+        {
+            RestRequest uploadRequest = CreateRestRequest(URI_RESOURCE, Method.Post, ContentType.MULTIPART_FORM_DATA);
+            uploadRequest.AlwaysMultipartFormData = true;
+            //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
+            uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, fileStreamData, documentDate, collectionIds, folderIds), "application/json"));
+            DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, fileStreamData, streamWrapper, cancellationToken);
             uploadRequest.Timeout = int.MaxValue;
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
             //-> TODO: re-activate or find workaround for following line:
@@ -178,6 +199,30 @@ namespace CenterDevice.Rest.Clients.Documents
             var document = new JObject();
             document[RestApiConstants.FILENAME] = filename;
             document[RestApiConstants.SIZE] = new FileInfo(fileFullpath).Length;
+            if (documentDate != null)
+            {
+                document[RestApiConstants.DOCUMENT_DATE] = documentDate.Value;
+            }
+
+            var actions = new JObject();
+            actions[RestApiConstants.ADD_TO_FOLDER] = folderIds != null ? JToken.FromObject(folderIds) : new JArray();
+            actions[RestApiConstants.ADD_TO_COLLECTION] = collectionIds != null ? JToken.FromObject(collectionIds) : new JArray();
+
+            var metadata = new JObject();
+            metadata[RestApiConstants.DOCUMENT] = document;
+            metadata[RestApiConstants.ACTIONS] = actions;
+
+            var upload = new JObject();
+            upload[RestApiConstants.METADATA] = metadata;
+
+            return upload.ToString();
+        }
+
+        private string GenerateDocumentUploadJson(string filename, System.Func<Stream> fileDataStream, DateTime? documentDate, List<string> collectionIds, List<string> folderIds)
+        {
+            var document = new JObject();
+            document[RestApiConstants.FILENAME] = filename;
+            document[RestApiConstants.SIZE] = fileDataStream().Length;
             if (documentDate != null)
             {
                 document[RestApiConstants.DOCUMENT_DATE] = documentDate.Value;
