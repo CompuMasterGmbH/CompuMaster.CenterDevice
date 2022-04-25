@@ -52,88 +52,32 @@ namespace CenterDevice.SampleApp
                     System.Console.WriteLine("\r\n## Full directory listing - after GetDirectories(2)");
                     IOClient.RootDirectory.GetDirectories(2, true);
                     System.Console.WriteLine(IOClient.RootDirectory.ToStringListing(true, true));
-
-                    System.Console.WriteLine("\r\n## Full directory listing - after GetDirectories(10)");
-                    IOClient.RootDirectory.GetDirectories(10, true);
-                    System.Console.WriteLine(IOClient.RootDirectory.ToStringListing(true, true));
                 }
 
                 //Navigate and open specified paths
                 if (false)
                 {
-                    IO.DirectoryInfo BaseTestPath;
+                    CenterDevice.IO.DirectoryInfo OpenedTestDir;
+                    CenterDevice.IO.FileInfo OpenedTestFile;
+                    CenterDevice.IO.DirectoryInfo BaseTestPath = IOClient.RootDirectory;
                     string OpenTestPath;
-                    IO.DirectoryInfo OpenedTestDir;
-                    IO.FileInfo OpenedTestFile;
 
-                    BaseTestPath = IOClient.RootDirectory;
-                    OpenTestPath = @"/";
+                    OpenTestPath = @"Test/123/";
                     System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
                     System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
 
-                    OpenTestPath = @"";
-                    System.Console.WriteLine("\r\n## Open directory path - \"" + OpenTestPath + "\"" + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
-
-                    OpenTestPath = @".";
-                    System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
-
-                    OpenTestPath = @"Test/Summen- und Saldenliste\2020/";
-                    System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
-
-                    OpenTestPath = @"Test/Summen- und Saldenliste\2020/test.txt.txt";
+                    OpenTestPath = @"Test/123/test.txt";
                     System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
                     System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
-
-                    BaseTestPath = OpenedTestDir;
-                    OpenTestPath = @"test.txt.txt";
-                    System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
-
-                    OpenTestPath = @"/";
-                    System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
-
-                    OpenTestPath = @"";
-                    System.Console.WriteLine("\r\n## Open directory path - \"" + OpenTestPath + "\"" + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
-
-                    OpenTestPath = @".";
-                    System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
 
                     OpenTestPath = @"..";
                     System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
                     System.Console.WriteLine("FullName=" + OpenedTestDir.FullName);
 
-                    OpenTestPath = @"test.txt.txt";
-                    System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
-
-                    OpenTestPath = @"../test.txt.txt";
-                    System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
-
-                    OpenTestPath = @"/Test/test.txt.txt";
-                    System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
-                    OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
-                    System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
-
-                    OpenTestPath = @"/test.txt.txt";
+                    OpenTestPath = @"/Another/Test/test.txt";
                     System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
                     System.Console.WriteLine("FullName=" + OpenedTestFile.FullName);
@@ -142,22 +86,22 @@ namespace CenterDevice.SampleApp
                 //File details
                 if (false)
                 {
-                    IO.DirectoryInfo BaseTestPath;
+                    CenterDevice.IO.DirectoryInfo BaseTestPath;
+                    CenterDevice.IO.DirectoryInfo OpenedTestDir;
+                    CenterDevice.IO.FileInfo OpenedTestFile;
                     string OpenTestPath;
-                    IO.DirectoryInfo OpenedTestDir;
-                    IO.FileInfo OpenedTestFile;
 
                     BaseTestPath = IOClient.RootDirectory;
-                    OpenTestPath = @"Test/Summen- und Saldenliste\2020";
+                    OpenTestPath = @"Test/123/";
                     System.Console.WriteLine("\r\n## Directory listing for path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    OpenedTestDir.GetDirectories(10, true);
+                    OpenedTestDir.GetDirectories(Int32.MaxValue, true);
                     System.Console.WriteLine(OpenedTestDir.ToStringListing(true, true));
                     System.Console.WriteLine("\r\n## Open directory path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     System.Console.WriteLine(OpenedTestDir.ToStringDetails());
 
                     BaseTestPath = IOClient.RootDirectory;
-                    OpenTestPath = @"Test/Summen- und Saldenliste\2020/test.txt.txt";
+                    OpenTestPath = @"Test/123/test.txt";
                     System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath);
                     System.Console.WriteLine(OpenedTestFile.ToStringDetails());
@@ -166,17 +110,17 @@ namespace CenterDevice.SampleApp
                 //File upload/download/deletion
                 if (false)
                 {
-                    IO.DirectoryInfo BaseTestPath;
+                    CenterDevice.IO.DirectoryInfo BaseTestPath;
+                    CenterDevice.IO.DirectoryInfo OpenedTestDir;
+                    CenterDevice.IO.FileInfo OpenedTestFile;
                     string OpenTestPath;
-                    IO.DirectoryInfo OpenedTestDir;
-                    IO.FileInfo OpenedTestFile;
                     string TransferTestFileName;
 
                     TransferTestFileName = "uploaded.by.sampleapp.txt";
                     BaseTestPath = IOClient.RootDirectory;
                     OpenTestPath = @"Test/Summen- und Saldenliste\2020/" + TransferTestFileName;
                     OpenedTestDir = BaseTestPath.OpenDirectoryPath(OpenTestPath);
-                    OpenedTestDir.GetDirectories(10, true);
+                    OpenedTestDir.GetDirectories(Int32.MaxValue, true);
                     System.Console.WriteLine("\r\n## Open file path - " + OpenTestPath + " [Start: " + BaseTestPath + "]");
                     if (OpenedTestDir.FileExists(TransferTestFileName))
                     {
@@ -232,12 +176,12 @@ namespace CenterDevice.SampleApp
                         System.Console.WriteLine(Indent("File doesn't exist: " + TransferTestFileName));
                 }
             }
-            //catch (ApiException e)
-            //{
-            //    System.Console.WriteLine("Exception when calling API: " + e.Message);
-            //    System.Console.WriteLine("Status Code: " + e.ErrorCode);
-            //    System.Console.WriteLine(e.StackTrace);
-            //}
+            catch (CompuMaster.Scopevisio.OpenApi.Client.ApiException e)
+            {
+                System.Console.WriteLine("Exception when calling API: " + e.Message);
+                System.Console.WriteLine("Status Code: " + e.ErrorCode);
+                System.Console.WriteLine(e.StackTrace);
+            }
 #pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception e)
             {
