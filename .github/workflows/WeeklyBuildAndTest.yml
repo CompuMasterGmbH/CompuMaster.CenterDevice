@@ -34,8 +34,7 @@ jobs:
         # Prevent concurrent job runners changing the very same data on the remote DMS test server
         concurrency: teamwork_test_server
         
-        runs-on:
-            os: ubuntu-latest
+        runs-on: ubuntu-latest
 
         strategy:
             # test mights fail in run simultaneously because of preparation and cleanup of test file on the very same DMS space
