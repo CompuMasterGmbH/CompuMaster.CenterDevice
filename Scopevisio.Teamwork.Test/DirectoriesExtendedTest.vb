@@ -81,37 +81,61 @@ Imports CenterDevice.Test.Tools
     End Sub
 
     <Test> Public Sub RootDirBrowsing()
+        Dim StartTime, EndTime As DateTime
 
         Me.IOClient.RootDirectory.ResetDirectoriesCache()
         Me.IOClient.RootDirectory.ResetFilesCache()
 
+        StartTime = Now
         System.Console.WriteLine(System.Environment.NewLine & "## Initial directory listing - flat")
+        System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
         System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(False, True))
         Assert.AreEqual("/", Me.IOClient.RootDirectory.ToStringListing(False, True))
+        EndTime = Now
+        System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
 
+        StartTime = Now
         System.Console.WriteLine(System.Environment.NewLine & "## Initial directory listing - recursive - without display of files")
+        System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
         System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, False))
         Assert.AreEqual("/" & System.Environment.NewLine & "    [Dirs:?]/", Me.IOClient.RootDirectory.ToStringListing(True, False))
+        EndTime = Now
+        System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
 
+        StartTime = Now
         System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(0)")
+        System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
         Me.IOClient.RootDirectory.GetDirectories(0, False)
         Assert.NotZero(Me.IOClient.RootDirectory.GetDirectories(0, False).Length)
+        System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, True))
+        EndTime = Now
+        System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
 
         If False Then 'Currenlty DEACTIVATED for performance reasons
-            System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, True))
-            System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(1)")
 
+            StartTime = Now
+            System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(1)")
+            System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
             Me.IOClient.RootDirectory.GetDirectories(1, True)
             System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, True))
+            EndTime = Now
+            System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
 
+            StartTime = Now
             System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(2)")
+            System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
             Me.IOClient.RootDirectory.GetDirectories(2, True)
-
             System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, True))
-            System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(10)")
+            EndTime = Now
+            System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
 
-            Me.IOClient.RootDirectory.GetDirectories(10, True)
+            StartTime = Now
+            System.Console.WriteLine(System.Environment.NewLine & "## Full directory listing - after GetDirectories(Int32.MaxValue)")
+            System.Console.WriteLine(">>> Start: " & Now.ToString("yyyy-MM-dd HH:mm:ss"))
+            Me.IOClient.RootDirectory.GetDirectories(Int32.MaxValue, True)
             System.Console.WriteLine(Me.IOClient.RootDirectory.ToStringListing(True, True))
+            EndTime = Now
+            System.Console.WriteLine("<<< End after " & EndTime.Subtract(StartTime).TotalSeconds.ToString("#,##0") & "s " & EndTime.Subtract(StartTime).Milliseconds.ToString("#,##0") & "ms: " & EndTime.ToString("yyyy-MM-dd HH:mm:ss"))
         End If
     End Sub
 

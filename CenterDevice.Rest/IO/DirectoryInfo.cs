@@ -783,7 +783,8 @@ namespace CenterDevice.IO
             sb.AppendLine(this.Indent("NeedToOptIn=" + this.NeedToOptIn));
             sb.AppendLine(this.Indent("Public=" + this.Public));
             sb.AppendLine(this.Indent("Owner=" + this.Owner));
-            sb.AppendLine(this.Indent("HasCollidingDuplicateFiles=" + this.ContainsCollidingDuplicateFiles));
+            sb.AppendLine(this.Indent("ContainsCollidingDuplicateFiles=" + this.ContainsCollidingDuplicateFiles));
+            sb.AppendLine(this.Indent("ContainsCollidingDuplicateDirectories=" + this.ContainsCollidingDuplicateDirectories));
             sb.Append("}");
             return sb.ToString();
         }
