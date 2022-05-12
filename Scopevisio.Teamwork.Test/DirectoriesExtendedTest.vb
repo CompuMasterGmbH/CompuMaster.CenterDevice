@@ -209,24 +209,24 @@ Imports CenterDevice.Test.Tools
 
         OpenTestPath = "../test.txt.txt"
         System.Console.WriteLine(System.Environment.NewLine & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
-                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
-                                                         End Sub)
+        Assert.Catch(Of CenterDevice.Model.Exceptions.FileNotFoundException)(Sub()
+                                                                                 OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                                                 System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                                             End Sub)
 
         OpenTestPath = "/" & RemoteTestDirPath & "/Test/test.txt.txt"
         System.Console.WriteLine(System.Environment.NewLine & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
-                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
-                                                         End Sub)
+        Assert.Catch(Of CenterDevice.Model.Exceptions.FileNotFoundException)(Sub()
+                                                                                 OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                                                 System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                                             End Sub)
 
         OpenTestPath = "/test.txt.txt"
         System.Console.WriteLine(System.Environment.NewLine & "## Open file path - " + OpenTestPath + " [Start: " & BaseTestPath.ToString & "]")
-        Assert.Catch(Of System.IO.FileNotFoundException)(Sub()
-                                                             OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
-                                                             System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
-                                                         End Sub)
+        Assert.Catch(Of CenterDevice.Model.Exceptions.FileNotFoundException)(Sub()
+                                                                                 OpenedTestFile = BaseTestPath.OpenFilePath(OpenTestPath)
+                                                                                 System.Console.WriteLine("FullName=" + OpenedTestFile.FullName)
+                                                                             End Sub)
     End Sub
 
     <Test> Public Sub FileDetails()
@@ -335,9 +335,9 @@ Imports CenterDevice.Test.Tools
         'Lookup status again and check that old caches don't exist
         Assert.IsFalse(BaseTestPath.DirectoryExists(remotePath))
 
-        Assert.Catch(Of System.IO.DirectoryNotFoundException)(Sub()
-                                                                  BaseTestPath.OpenDirectoryPath(remotePath)
-                                                              End Sub)
+        Assert.Catch(Of CenterDevice.Model.Exceptions.DirectoryNotFoundException)(Sub()
+                                                                                      BaseTestPath.OpenDirectoryPath(remotePath)
+                                                                                  End Sub)
     End Sub
 
     <Test> Public Sub CreateCollectionOrFolderAndCleanup()

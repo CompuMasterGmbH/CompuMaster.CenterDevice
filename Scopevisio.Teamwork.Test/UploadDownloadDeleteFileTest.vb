@@ -106,7 +106,7 @@
             'nothing to delete -> shortcut exit if file not existing and not required to exist
             Return True
         ElseIf failureOnMissingFile = True AndAlso openedDirectory.FileExists(remoteFileName) = False Then
-            Throw New System.IO.FileNotFoundException("File is expected to exist: " & remoteFileName)
+            Throw New CenterDevice.Model.Exceptions.FileNotFoundException(remoteFileName)
         Else
             openedDirectory.ResetFilesCache()
             If openedDirectory.FileExists(remoteFileName) = True Then

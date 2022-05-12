@@ -160,7 +160,7 @@ namespace CenterDevice.IO
                 if (dir.Name == directoryName)
                     return dir;
             }
-            throw new System.IO.DirectoryNotFoundException("Directory not found: " + directoryName);
+            throw new CenterDevice.Model.Exceptions.DirectoryNotFoundException(directoryName);
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace CenterDevice.IO
                 if (file.FileName == fileName)
                     return file;
             }
-            throw new System.IO.FileNotFoundException("File not found", this.ioClient.Paths.CombinePath(this.Path.ToArray(), fileName));
+            throw new CenterDevice.Model.Exceptions.FileNotFoundException(this.ioClient.Paths.CombinePath(this.Path.ToArray(), fileName));
         }
 
         /// <summary>
