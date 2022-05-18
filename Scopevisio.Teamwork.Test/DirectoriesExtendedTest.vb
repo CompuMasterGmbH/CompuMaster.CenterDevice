@@ -273,7 +273,7 @@ Imports CenterDevice.Test.Tools
     End Sub
 
     ''' <summary>
-    ''' Create/open remote test folder and retrieve its collection ID
+    ''' Create/open remote test folder
     ''' </summary>
     ''' <param name="remotePath"></param>
     ''' <returns></returns>
@@ -298,7 +298,11 @@ Imports CenterDevice.Test.Tools
 
         Dim Result As IO.DirectoryInfo = BaseTestPath.OpenDirectoryPath(remotePath)
         Assert.NotNull(Result)
-        Assert.AreEqual(IO.DirectoryInfo.DirectoryType.Collection, Result.Type)
+        If Result.Type = IO.DirectoryInfo.DirectoryType.Folder Then
+            Assert.AreEqual(IO.DirectoryInfo.DirectoryType.Folder, Result.Type)
+        Else
+            Assert.AreEqual(IO.DirectoryInfo.DirectoryType.Collection, Result.Type)
+        End If
         Return Result
     End Function
 
@@ -641,10 +645,15 @@ Imports CenterDevice.Test.Tools
     <Test> Public Sub CopyFiles()
         Const RemoteTestFolderNameSrc As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Src"
         Const RemoteTestFolderNameDestCollection As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest"
-        Const RemoteTestFolderNameDestFolder As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest/subfolder"
+        Const RemoteTestFolderNameDestFolder1 As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest/subfolder1"
+        Const RemoteTestFolderNameDestFolder2 As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest/subfolder2"
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameSrc, False)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestCollection, False)
+
         Dim RemoteTestDirSrc As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameSrc)
         Dim RemoteTestDirDestCollection As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestCollection)
-        Dim RemoteTestDirDestFolder As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestFolder)
+        Dim RemoteTestDirDestFolder1 As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestFolder1)
+        Dim RemoteTestDirDestFolder2 As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestFolder2)
 
         Dim TestFile1Data As Byte() = New Byte() {55, 56, 32, 42, 13, 10, 44, 48, 50}
 
@@ -653,23 +662,39 @@ Imports CenterDevice.Test.Tools
         End Using
         Dim SrcFile As IO.FileInfo = RemoteTestDirSrc.GetFile("test-source-file")
 
+        Console.WriteLine("RemoteTestDirDestCollection=" & RemoteTestDirDestCollection.FullName)
+        Console.WriteLine("RemoteTestDirDestCollection.CollectionID=" & RemoteTestDirDestCollection.CollectionID)
         RemoteTestDirDestCollection.AddExistingFile(SrcFile)
-        RemoteTestDirDestFolder.AddExistingFile(SrcFile)
+        Dim CopyInDestCollection As IO.FileInfo = RemoteTestDirDestCollection.GetFile("test-source-file")
+        Assert.AreEqual(SrcFile.ID, CopyInDestCollection.ID)
+
+        RemoteTestDirDestFolder1.AddExistingFile(SrcFile)
+        Dim CopyInDestFolder1 As IO.FileInfo = RemoteTestDirDestFolder1.GetFile("test-source-file")
+        Assert.AreEqual(SrcFile.ID, CopyInDestFolder1.ID)
+
+        RemoteTestDirDestFolder2.AddExistingFile(SrcFile)
+        Dim CopyInDestFolder2 As IO.FileInfo = RemoteTestDirDestFolder2.GetFile("test-source-file")
+        Assert.AreEqual(SrcFile.ID, CopyInDestFolder2.ID)
 
         Assert.AreEqual(SrcFile.ID, RemoteTestDirDestCollection.GetFile("test-source-file").ID)
-        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder1.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder2.GetFile("test-source-file").ID)
 
         RemoteTestDirDestCollection.ResetFilesCache()
-        RemoteTestDirDestFolder.ResetFilesCache()
+        RemoteTestDirDestFolder1.ResetFilesCache()
+        RemoteTestDirDestFolder2.ResetFilesCache()
 
         Assert.AreEqual(SrcFile.ID, RemoteTestDirDestCollection.GetFile("test-source-file").ID)
-        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder1.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder2.GetFile("test-source-file").ID)
 
         Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestCollection.GetFile("test-source-file").Download()))
-        Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestFolder.GetFile("test-source-file").Download()))
+        Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestFolder1.GetFile("test-source-file").Download()))
+        Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestFolder2.GetFile("test-source-file").Download()))
 
         Me.RemoveRemoteTestFolder(RemoteTestFolderNameSrc, True)
-        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestFolder, True)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestFolder1, True)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestFolder2, True)
         Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestCollection, True)
     End Sub
 
