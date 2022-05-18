@@ -413,10 +413,18 @@ namespace CenterDevice.IO
         /// <returns></returns>
         public bool DirectoryExists(string directoryName)
         {
+            if (directoryName == null) throw new ArgumentNullException(nameof(directoryName));
+            string[] subDirs = directoryName.Split(this.ioClient.Paths.DirectorySeparatorChar, this.ioClient.Paths.AltDirectorySeparatorChar);
+            if (subDirs.Length == 0) throw new ArgumentNullException(nameof(directoryName));
             foreach (DirectoryInfo dir in this.GetDirectories())
             {
-                if (dir.Name == directoryName)
+                if (subDirs.Length == 1 && dir.Name == subDirs[0])
                     return true;
+                else if (dir.Name == subDirs[0])
+                {
+                    string[] childSubDirs = subDirs.AsSpan(1, subDirs.Length - 1).ToArray(); 
+                    return dir.DirectoryExists(String.Join(this.ioClient.Paths.DirectorySeparatorChar.ToString(), childSubDirs));
+                }
             }
             return false;
         }
@@ -917,8 +925,8 @@ namespace CenterDevice.IO
         /// <param name="directoryName"></param>
         public void CreateDirectory(string directoryName)
         {
-            if (directoryName.Contains(System.IO.Path.DirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + System.IO.Path.DirectorySeparatorChar.ToString());
-            if (directoryName.Contains(System.IO.Path.AltDirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + System.IO.Path.AltDirectorySeparatorChar.ToString());
+            if (directoryName.Contains(this.ioClient.Paths.DirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + this.ioClient.Paths.DirectorySeparatorChar.ToString());
+            if (directoryName.Contains(this.ioClient.Paths.AltDirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + this.ioClient.Paths.AltDirectorySeparatorChar.ToString());
             if (this.IsRootDirectory)
                 this.ioClient.ApiClient.Collections.CreateCollection(this.ioClient.CurrentAuthenticationContextUserID, directoryName);
             else
@@ -932,7 +940,7 @@ namespace CenterDevice.IO
         /// <param name="directoryPath"></param>
         public void CreateDirectoryStructure(string directoryPath)
         {
-            String[] DirLevels = directoryPath.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            String[] DirLevels = directoryPath.Split(this.ioClient.Paths.DirectorySeparatorChar, this.ioClient.Paths.AltDirectorySeparatorChar);
             if (DirLevels.Length == 0) return;
             if (DirLevels[0] == "") throw new ArgumentException("Must not start with a directory separator char", nameof (directoryPath));
             DirectoryInfo SubDir = this;
