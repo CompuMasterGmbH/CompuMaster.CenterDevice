@@ -46,6 +46,28 @@ namespace CenterDevice.IO
             this.restCollection = null;
         }
 
+        public void AddExistingFile(FileInfo file)
+        {
+            if (this.IsRootDirectory)
+            {
+                throw new System.NotSupportedException("Files in root directory are not supported");
+            }
+            else if (this.restCollection != null)
+            {
+                this.ioClient.ApiClient.Collection.AddDocumentToCollection(this.ioClient.CurrentAuthenticationContextUserID, file.ID, this.restCollection.Id);
+                this.getFiles = null;
+            }
+            else if (this.restFolder != null)
+            {
+                this.ioClient.ApiClient.Folder.AddDocument(this.ioClient.CurrentAuthenticationContextUserID, file.ID, this.restFolder.Id);
+                this.getFiles = null;
+            }
+            else
+                throw new System.NotImplementedException();
+
+        }
+
+
         protected readonly CenterDevice.IO.IOClientBase ioClient;
         protected readonly CenterDevice.IO.DirectoryInfo parentDirectory;
         public CenterDevice.IO.DirectoryInfo ParentDirectory
@@ -895,6 +917,8 @@ namespace CenterDevice.IO
         /// <param name="directoryName"></param>
         public void CreateDirectory(string directoryName)
         {
+            if (directoryName.Contains(System.IO.Path.DirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + System.IO.Path.DirectorySeparatorChar.ToString());
+            if (directoryName.Contains(System.IO.Path.AltDirectorySeparatorChar.ToString())) throw new ArgumentException("Not allowed char in directoryName: " + System.IO.Path.AltDirectorySeparatorChar.ToString());
             if (this.IsRootDirectory)
                 this.ioClient.ApiClient.Collections.CreateCollection(this.ioClient.CurrentAuthenticationContextUserID, directoryName);
             else

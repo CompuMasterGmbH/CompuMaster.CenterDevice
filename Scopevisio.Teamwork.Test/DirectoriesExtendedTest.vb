@@ -290,7 +290,7 @@ Imports CenterDevice.Test.Tools
 
         'Create the folder
         If BaseTestPath.DirectoryExists(remotePath) = False Then
-            BaseTestPath.CreateDirectory(remotePath)
+            BaseTestPath.CreateDirectoryStructure(remotePath)
         End If
 
         'Lookup status again and check that old caches don't exist
@@ -638,6 +638,47 @@ Imports CenterDevice.Test.Tools
         Me.RemoveRemoteTestFolder(RemoteTestFolderName, True)
     End Sub
 
+    <Test> Public Sub CopyFiles()
+        Const RemoteTestFolderNameSrc As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Src"
+        Const RemoteTestFolderNameDestCollection As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest"
+        Const RemoteTestFolderNameDestFolder As String = "ZZZ_UnitTest_CenterDevice_TempDir_CopyFiles_Dest/subfolder"
+        Dim RemoteTestDirSrc As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameSrc)
+        Dim RemoteTestDirDestCollection As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestCollection)
+        Dim RemoteTestDirDestFolder As IO.DirectoryInfo = Me.CreateRemoteTestFolderIfNotExisting(RemoteTestFolderNameDestFolder)
+
+        Dim TestFile1Data As Byte() = New Byte() {55, 56, 32, 42, 13, 10, 44, 48, 50}
+
+        Using TempFileData As New System.IO.MemoryStream(TestFile1Data)
+            RemoteTestDirSrc.UploadAndCreateNewFile(Function() TempFileData, "test-source-file")
+        End Using
+        Dim SrcFile As IO.FileInfo = RemoteTestDirSrc.GetFile("test-source-file")
+
+        RemoteTestDirDestCollection.AddExistingFile(SrcFile)
+        RemoteTestDirDestFolder.AddExistingFile(SrcFile)
+
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestCollection.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder.GetFile("test-source-file").ID)
+
+        RemoteTestDirDestCollection.ResetFilesCache()
+        RemoteTestDirDestFolder.ResetFilesCache()
+
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestCollection.GetFile("test-source-file").ID)
+        Assert.AreEqual(SrcFile.ID, RemoteTestDirDestFolder.GetFile("test-source-file").ID)
+
+        Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestCollection.GetFile("test-source-file").Download()))
+        Assert.AreEqual(TestFile1Data, StreamToByteArray(RemoteTestDirDestFolder.GetFile("test-source-file").Download()))
+
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameSrc, True)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestFolder, True)
+        Me.RemoveRemoteTestFolder(RemoteTestFolderNameDestCollection, True)
+    End Sub
+
+    Private Function StreamToByteArray(stream As System.IO.Stream) As Byte()
+        Using MemStream As New System.IO.MemoryStream()
+            stream.CopyTo(MemStream)
+            Return MemStream.ToArray
+        End Using
+    End Function
 
     'TODO: adding tests for:
     'Dim CreatedLink As LinkCreationResponse
