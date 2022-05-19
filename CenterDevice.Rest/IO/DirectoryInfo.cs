@@ -1012,7 +1012,7 @@ namespace CenterDevice.IO
                 if (targetDirectory.restFolder != null)
                     this.ioClient.ApiClient.Folder.MoveFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, targetDirectory.FolderID, targetDirectory.AssociatedCollection.restCollection.Id);
                 else
-                    throw new NotSupportedException("Moving a folder Directory into into a collection Directory is not supported (collections must remain collections, folder must remain folders)");
+                    throw new NotSupportedException("Moving a folder Directory into a collection Directory is not supported (collections must remain collections, folder must remain folders)");
             else
                 throw new NotImplementedException("Delecte action for this directory type hasn't been implemented, yet");
             this.ParentDirectory.getDirectories = null; //force reload on next request
