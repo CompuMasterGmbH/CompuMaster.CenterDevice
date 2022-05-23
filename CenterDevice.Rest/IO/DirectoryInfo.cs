@@ -1110,14 +1110,16 @@ namespace CenterDevice.IO
             if (this.IsRootDirectory)
                 throw new NotSupportedException("Moving root directory is not supported");
             else if (this.restCollection != null)
-                throw new NotSupportedException("Moving a collection Directory is not supported (collections must remain collections, folders must remain folders)");
+                throw new NotSupportedException("Moving a collection directory is not supported (collections must remain collections, folders must remain folders)");
             else if (this.restFolder != null)
                 if (targetDirectory.restFolder != null)
                     this.ioClient.ApiClient.Folder.MoveFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, targetDirectory.FolderID, targetDirectory.AssociatedCollection.restCollection.Id);
+                else if (this.restCollection != null)
+                    this.ioClient.ApiClient.Folder.MoveFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, null, targetDirectory.restCollection.Id);
                 else
-                    throw new NotSupportedException("Moving a folder Directory into a collection Directory is not supported (collections must remain collections, folder must remain folders)");
+                    throw new NotImplementedException("Delete action for this folder directory type hasn't been implemented, yet");
             else
-                throw new NotImplementedException("Delecte action for this directory type hasn't been implemented, yet");
+                throw new NotImplementedException("Delete action for this directory type hasn't been implemented, yet");
             this.ParentDirectory.getDirectories = null; //force reload on next request
             targetDirectory.getDirectories = null; //force reload on next request
             this.parentDirectory = targetDirectory; //correctly re-assign current file to new parent directory
