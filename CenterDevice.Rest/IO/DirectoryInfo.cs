@@ -50,11 +50,31 @@ namespace CenterDevice.IO
         /// Copy a file (WARNING: limited to file sizes &lt; 2 GB, downloads + re-uploads file data)
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="newFileName"></param>
         /// <exception cref="NotImplementedException"></exception>
-        public void AddCopy(DirectoryInfo source, string newFileName)
+        public void AddCopy(DirectoryInfo source)
+        {
+            this.AddCopy(source, source.Name);
+        }
+
+        /// <summary>
+        /// Copy a file (WARNING: limited to file sizes &lt; 2 GB, downloads + re-uploads file data)
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="newDirName">The name of the new subdirectory</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void AddCopy(DirectoryInfo source, string newDirName)
         {
             throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Copy a file (WARNING: limited to file sizes &lt; 2 GB, downloads + re-uploads file data)
+        /// </summary>
+        /// <param name="source"></param>
+        /// <exception cref="Model.Exceptions.FileAlreadyExistsException"></exception>
+        public void AddCopy(FileInfo source)
+        {
+            this.AddCopy(source, source.FileName);
         }
 
         /// <summary>
@@ -1025,9 +1045,9 @@ namespace CenterDevice.IO
         {
             String[] DirLevels = directoryPath.Split(this.ioClient.Paths.DirectorySeparatorChar, this.ioClient.Paths.AltDirectorySeparatorChar);
             if (DirLevels.Length == 0) return;
-            if (DirLevels[0] == "") throw new ArgumentException("Must not start with a directory separator char", nameof (directoryPath));
+            if (DirLevels[0] == "") throw new ArgumentException("Must not start with a directory separator char", nameof(directoryPath));
             DirectoryInfo SubDir = this;
-            foreach (string dirName in  DirLevels)
+            foreach (string dirName in DirLevels)
             {
                 if (dirName == "") throw new ArgumentException("Must not contain empty sub directory names", nameof(directoryPath));
                 if (!SubDir.DirectoryExists(dirName)) SubDir.CreateDirectory(dirName);
