@@ -870,13 +870,18 @@ Imports CenterDevice.Test.Tools
         Dim ExpectedFullNameAfterRename As String = Me.IOClient.Paths.CombinePath(RemoteTestDirDestFolder1.Path, RemoteTestDirDestFolder2.Name.Replace("2", "3"))
         Assert.AreEqual(ExpectedFullNameAfterRename, RemoteTestDirDestFolder2.FullName)
 
+        Dim ReloadedDir = Me.IOClient.RootDirectory.OpenDirectoryPath(ExpectedFullNameAfterRename)
+        Assert.IsNotNull(ReloadedDir)
+        Assert.AreEqual(ExpectedFullNameAfterRename, ReloadedDir.FullName)
+        Assert.IsTrue(Me.IOClient.RootDirectory.DirectoryExists(ExpectedFullNameAfterRename), "Expected directory: " & ExpectedFullNameAfterRename)
+
         RemoteTestDirDestCollection.ResetDirectoriesCache()
         RemoteTestDirDestFolder1.ResetDirectoriesCache()
         Me.IOClient.RootDirectory.ResetDirectoriesCache()
         Dim FoundSubDirs As String() = RemoteTestDirDestFolder1.GetDirectories().Select(Of String)(Function(value)
                                                                                                        Return value.FullName
                                                                                                    End Function).ToArray
-        Dim ReloadedDir = Me.IOClient.RootDirectory.OpenDirectoryPath(ExpectedFullNameAfterRename)
+        ReloadedDir = Me.IOClient.RootDirectory.OpenDirectoryPath(ExpectedFullNameAfterRename)
         Assert.IsNotNull(ReloadedDir)
         Assert.AreEqual(ExpectedFullNameAfterRename, ReloadedDir.FullName)
         Assert.IsTrue(Me.IOClient.RootDirectory.DirectoryExists(ExpectedFullNameAfterRename), "Expected directory: " & ExpectedFullNameAfterRename & ", but only found" & System.Environment.NewLine &
