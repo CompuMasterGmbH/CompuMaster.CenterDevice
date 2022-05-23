@@ -1114,7 +1114,7 @@ namespace CenterDevice.IO
             else if (this.restFolder != null)
                 if (targetDirectory.restFolder != null)
                     this.ioClient.ApiClient.Folder.MoveFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, targetDirectory.FolderID, targetDirectory.AssociatedCollection.restCollection.Id);
-                else if (this.restCollection != null)
+                else if (targetDirectory.restCollection != null)
                     this.ioClient.ApiClient.Folder.MoveFolder(this.ioClient.CurrentAuthenticationContextUserID, this.restFolder.Id, null, targetDirectory.restCollection.Id);
                 else
                     throw new NotImplementedException("Delete action for this folder directory type hasn't been implemented, yet");
