@@ -12,9 +12,9 @@ namespace CenterDevice.IO
             this.document = document;
         }
 
-        readonly CenterDevice.IO.IOClientBase ioClient;
+        protected readonly CenterDevice.IO.IOClientBase ioClient;
 
-        readonly CenterDevice.IO.DirectoryInfo parentDirectory;
+        private CenterDevice.IO.DirectoryInfo parentDirectory;
         /// <summary>
         /// The directory containing this file
         /// </summary>
@@ -108,6 +108,14 @@ namespace CenterDevice.IO
         /// </summary>
         public string FileName { get => this.document.Filename; }
 
+        protected string fileName 
+        { 
+            set 
+            {
+                this.document.Filename = value;
+            }
+        }
+
         /// <summary>
         /// The full path starting from root
         /// </summary>
@@ -142,13 +150,13 @@ namespace CenterDevice.IO
         /// <summary>
         /// The full path starting from root
         /// </summary>
-        public List<string> Path
+        public string[] Path
         {
             get
             {
-                List<string> result = this.parentDirectory.Path;
+                var result = new List<string>(this.parentDirectory.Path);
                 result.Add(this.FileName);
-                return result;
+                return result.ToArray();
             }
         }
 
@@ -239,6 +247,7 @@ namespace CenterDevice.IO
         {
             this.ioClient.ApiClient.Document.RenameDocument(this.ioClient.CurrentAuthenticationContextUserID, this.ID, targetFileName);
             this.parentDirectory.getFiles = null; //force reload on next request since changed file properties must be reloaded
+            this.fileName = targetFileName;
         }
 
         /// <summary>
@@ -319,6 +328,7 @@ namespace CenterDevice.IO
                 targetDirectory.AssociatedCollection.CollectionID, targetDirectory.FolderID);
             this.parentDirectory.getFiles = null; //force reload on next request since changed file properties must be reloaded
             targetDirectory.getFiles = null; //force reload on next request since changed file properties must be reloaded
+            this.parentDirectory = targetDirectory; //correctly re-assign current file to new parent directory
         }
     }
 }

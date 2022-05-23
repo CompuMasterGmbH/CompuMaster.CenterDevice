@@ -89,6 +89,18 @@ namespace CenterDevice.IO
             return this.CombinePath(combinedPaths.ToArray());
         }
 
+        ///// <summary>
+        ///// Combine directory names and file name to a path
+        ///// </summary>
+        ///// <param name="directoryNames"></param>
+        ///// <param name="fileName"></param>
+        ///// <returns></returns>
+        //public string CombinePath(List<string> directoryNames, string fileName)
+        //{
+        //    directoryNames.Add(fileName);
+        //    return this.CombinePath(directoryNames.ToArray());
+        //}
+
         /// <summary>
         /// Combine directory names to a path
         /// </summary>

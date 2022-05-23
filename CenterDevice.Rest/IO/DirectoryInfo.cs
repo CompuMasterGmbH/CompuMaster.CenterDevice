@@ -46,6 +46,64 @@ namespace CenterDevice.IO
             this.restCollection = null;
         }
 
+        /// <summary>
+        /// Copy a file (WARNING: limited to file sizes &lt; 2 GB, downloads + re-uploads file data)
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="newFileName"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public void AddCopy(DirectoryInfo source, string newFileName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Copy a file (WARNING: limited to file sizes &lt; 2 GB, downloads + re-uploads file data)
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="newFileName"></param>
+        /// <exception cref="Model.Exceptions.FileAlreadyExistsException"></exception>
+        public void AddCopy(FileInfo source, string newFileName)
+        {
+            if (this.FileExists(newFileName))
+                throw new Model.Exceptions.FileAlreadyExistsException(this.ioClient.Paths.CombinePath(this.Path, newFileName));
+            System.IO.Stream dataStream = CopyToMemoryStream(source.Download());
+            System.Func<System.IO.Stream> data = () => dataStream;
+            this.UploadAndCreateNewFile(data, newFileName);
+        }
+
+        /// <summary>
+        /// Create a new memory stream from a stream (WARNING: uses array feature, limits max. file size to 2 GB)
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        private System.IO.Stream CopyToMemoryStream(System.IO.Stream stream)
+        {
+            var ms = new System.IO.MemoryStream(ReadAllBytesFromStream(stream));
+            //var ms = new System.IO.MemoryStream();
+            //stream.CopyTo(ms);
+            return ms;
+        }
+
+        /// <summary>
+        /// Read binary data from stream to array (WARNING: array feature limits max. file size to 2 GB)
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        private Byte[] ReadAllBytesFromStream(System.IO.Stream stream)
+        {
+            var ms = new System.IO.MemoryStream();
+            stream.CopyTo(ms);
+            return ms.ToArray();
+        }
+
+        /// <summary>
+        /// Add a link to an existing file of another collection
+        /// </summary>
+        /// <param name="file"></param>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.NotImplementedException"></exception>
+        /// <remarks>These file links use special behaviour: a file/document can be referenced in a 1st collection to an origin source in a 2nd collection, but there can't be more than 1 link per collection -> 1st collection can contain (including all sub folders) max. 1 link -> adding a 2nd file link in a folder of 1st collection directly removes the origin 1st link in 1st collection</remarks>
         public void AddExistingFile(FileInfo file)
         {
             if (this.IsRootDirectory)
@@ -69,7 +127,7 @@ namespace CenterDevice.IO
 
 
         protected readonly CenterDevice.IO.IOClientBase ioClient;
-        protected readonly CenterDevice.IO.DirectoryInfo parentDirectory;
+        private CenterDevice.IO.DirectoryInfo parentDirectory;
         public CenterDevice.IO.DirectoryInfo ParentDirectory
         {
             get
@@ -373,7 +431,7 @@ namespace CenterDevice.IO
                 if (file.FileName == fileName)
                     return file;
             }
-            throw new CenterDevice.Model.Exceptions.FileNotFoundException(this.ioClient.Paths.CombinePath(this.Path.ToArray(), fileName));
+            throw new CenterDevice.Model.Exceptions.FileNotFoundException(this.ioClient.Paths.CombinePath(this.Path, fileName));
         }
 
         /// <summary>
@@ -416,17 +474,25 @@ namespace CenterDevice.IO
             if (directoryName == null) throw new ArgumentNullException(nameof(directoryName));
             string[] subDirs = directoryName.Split(this.ioClient.Paths.DirectorySeparatorChar, this.ioClient.Paths.AltDirectorySeparatorChar);
             if (subDirs.Length == 0) throw new ArgumentNullException(nameof(directoryName));
-            foreach (DirectoryInfo dir in this.GetDirectories())
+            if (directoryName.StartsWith(this.ioClient.Paths.DirectorySeparatorChar.ToString()) || directoryName.StartsWith(this.ioClient.Paths.AltDirectorySeparatorChar.ToString()))
             {
-                if (subDirs.Length == 1 && dir.Name == subDirs[0])
-                    return true;
-                else if (dir.Name == subDirs[0])
-                {
-                    string[] childSubDirs = subDirs.AsSpan(1, subDirs.Length - 1).ToArray(); 
-                    return dir.DirectoryExists(String.Join(this.ioClient.Paths.DirectorySeparatorChar.ToString(), childSubDirs));
-                }
+                string[] childSubDirs = subDirs.AsSpan(1, subDirs.Length - 1).ToArray();
+                return this.RootDirectory.DirectoryExists(String.Join(this.ioClient.Paths.DirectorySeparatorChar.ToString(), childSubDirs));
             }
-            return false;
+            else
+            {
+                foreach (DirectoryInfo dir in this.GetDirectories())
+                {
+                    if (subDirs.Length == 1 && dir.Name == subDirs[0])
+                        return true;
+                    else if (dir.Name == subDirs[0])
+                    {
+                        string[] childSubDirs = subDirs.AsSpan(1, subDirs.Length - 1).ToArray();
+                        return dir.DirectoryExists(String.Join(this.ioClient.Paths.DirectorySeparatorChar.ToString(), childSubDirs));
+                    }
+                }
+                return false;
+            }
         }
 
         /// <summary>
@@ -488,6 +554,23 @@ namespace CenterDevice.IO
                 else
                     //root folder
                     return null;
+            }
+        }
+
+        /// <summary>
+        /// The name of the directory (a CenterDevice collection or folder) or null if root directory
+        /// </summary>
+        protected string name
+        {
+            set
+            {
+                if (this.restCollection != null)
+                    this.restCollection.Name = value;
+                else if (this.restFolder != null)
+                    this.restFolder.Name = value;
+                else
+                    //root folder
+                    throw new NotSupportedException("Renaming of root folder not supported");
             }
         }
 
@@ -705,7 +788,7 @@ namespace CenterDevice.IO
         {
             get
             {
-                return this.ioClient.Paths.CombinePath(this.Path.ToArray());
+                return this.ioClient.Paths.CombinePath(this.Path);
             }
         }
 
@@ -771,7 +854,7 @@ namespace CenterDevice.IO
         /// <summary>
         /// The full path starting from root
         /// </summary>
-        public List<string> Path
+        public string[] Path
         {
             get
             {
@@ -779,9 +862,9 @@ namespace CenterDevice.IO
                 if (this.parentDirectory == null)
                     result = new List<string>();
                 else
-                    result = this.parentDirectory.Path;
+                    result = new List<string>(this.parentDirectory.Path);
                 result.Add(this.Name ?? this.ioClient.Paths.DirectorySeparatorChar.ToString());
-                return result;
+                return result.ToArray();
             }
         }
 
@@ -1017,6 +1100,7 @@ namespace CenterDevice.IO
                 throw new NotImplementedException("Delecte action for this directory type hasn't been implemented, yet");
             this.ParentDirectory.getDirectories = null; //force reload on next request
             targetDirectory.getDirectories = null; //force reload on next request
+            this.parentDirectory = targetDirectory; //correctly re-assign current file to new parent directory
         }
 
         /// <summary>
@@ -1034,6 +1118,7 @@ namespace CenterDevice.IO
             else
                 throw new NotImplementedException("Rename action for this directory type hasn't been implemented, yet");
             this.ParentDirectory.getDirectories = null; //force reload on next request
+            this.name = targetName;
         }
 
         /// <summary>
