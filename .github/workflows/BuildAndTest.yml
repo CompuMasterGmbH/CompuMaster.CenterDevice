@@ -97,7 +97,7 @@ jobs:
 #            #  # (it can not create check runs or pull request comments)
 #            #  if: always() #&& startsWith(matrix.os, 'ubuntu') #&& github.event_name != 'pull_request'
 #
-            - name: Unit Test Results (Linux) - NET 5.0
+            - name: Publish Unit Test Results (Linux) - NET 5.0
               uses: EnricoMi/publish-unit-test-result-action@v1
               if: always() && startsWith(matrix.os, 'ubuntu')
               with:
@@ -108,7 +108,7 @@ jobs:
                   check_name: Unit Test Results (${{matrix.os}})  - NET 5.0
                   report_individual_runs: true
 
-            - name: Unit Test Results (Win/Mac) - NET 5.0
+            - name: Publish Unit Test Results (Win/Mac) - NET 5.0
               uses: EnricoMi/publish-unit-test-result-action/composite@v1
               if: always() && (!(startsWith(matrix.os, 'ubuntu')))
               with:
