@@ -549,7 +549,7 @@ Imports CenterDevice.Test.Tools
             System.Console.WriteLine("Found user at index " & MyCounter & ": " & AllUsers.Users(MyCounter).Id & " / " & AllUsers.Users(MyCounter).GetFullName)
             If MyCounter > 5 Then Exit For
         Next
-        If AllUsers.Users.Count <> 0 Then
+        If AllUsers.Users.Count <> 0 AndAlso A1stUser IsNot Nothing Then
             Dim SharedCollection As CenterDevice.Rest.Clients.Collections.Collection
             Dim AllVisibleShareRecipients As List(Of String)
 
