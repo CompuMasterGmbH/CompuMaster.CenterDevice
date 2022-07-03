@@ -582,12 +582,12 @@ Imports CenterDevice.Test.Tools
             SharedCollection = Me.IOClient.ApiClient.Collection.GetCollection(Me.IOClient.CurrentAuthenticationContextUserID, RemoteCollection.CollectionID)
             AllVisibleShareRecipients = SharedCollection.Users?.Visible
             Assert.IsFalse(AllVisibleShareRecipients IsNot Nothing AndAlso AllVisibleShareRecipients.Contains(A1stUser.Id))
-        Else
-            Assert.Ignore("No users found, but at least 1 user required as share recipient")
-        End If
 
-        'Cleanup
-        Me.RemoveRemoteTestFolder(RemoteTestFolderName, True)
+            'Cleanup
+            Me.RemoveRemoteTestFolder(RemoteTestFolderName, True)
+        Else
+            Assert.Ignore("No users found, but at least 1 user required as share recipient (except the currently logged in user as share owner)")
+        End If
     End Sub
 
     ''' <summary>
