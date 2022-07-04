@@ -121,7 +121,7 @@ jobs:
 
             - name: Publish Unit Test Results (Linux) - NET Framework 4.8
               uses: EnricoMi/publish-unit-test-result-action@v1
-              if: always() && startsWith(matrix.os, 'ubuntu') && (!(startsWith(matrix.os, 'macos'))) # MacOS disabled because it often times out .NET Framework 4.8
+              if: (always() && startsWith(matrix.os, 'ubuntu'))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
@@ -132,7 +132,7 @@ jobs:
 
             - name: Publish Unit Test Results (Win/Mac) - NET Framework 4.8
               uses: EnricoMi/publish-unit-test-result-action/composite@v1
-              if: always() && (!(startsWith(matrix.os, 'ubuntu'))) && (!(startsWith(matrix.os, 'macos'))) # MacOS disabled because it often times out .NET Framework 4.8
+              if: (always() && startsWith(matrix.os, 'ubuntu'))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
@@ -140,7 +140,6 @@ jobs:
                   comment_title: Unit Test Statistics (${{matrix.os}}) - NET Framework 4.8
                   check_name: Unit Test Results (${{matrix.os}}) - NET Framework 4.8
                   report_individual_runs: true
-
 
 #            - name: Publish Unit Test Results
 #              uses: actions/upload-artifact@v2
