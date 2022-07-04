@@ -83,6 +83,7 @@ jobs:
               run: dotnet test --framework net5.0 --results-directory test-results-net5.0 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
             - name: Run Unit Tests - .NET Framework 4.8
+              if: startsWith(matrix.os, 'ubuntu')
               run: dotnet test --framework net48 --results-directory test-results-net48 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
 #            - name: Dir Listing (Win) test-results
