@@ -110,7 +110,7 @@ jobs:
                   report_individual_runs: true
 
             - name: Publish Unit Test Results (Win/Mac) - NET 5.0
-              uses: EnricoMi/publish-unit-test-result-action/composite@v1
+              uses: EnricoMi/publish-unit-test-result-action/composite@v2
               if: always() && (!(startsWith(matrix.os, 'ubuntu')))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -132,7 +132,7 @@ jobs:
                   report_individual_runs: true
 
             - name: Publish Unit Test Results (Win/Mac) - NET Framework 4.8
-              uses: EnricoMi/publish-unit-test-result-action/composite@v1
+              uses: EnricoMi/publish-unit-test-result-action/composite@v2
               if: (always() && startsWith(matrix.os, 'ubuntu'))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
