@@ -54,7 +54,7 @@ jobs:
             - name: Setup .NET Core
               uses: actions/setup-dotnet@v1
               with:
-                  dotnet-version: 5.0.x
+                  dotnet-version: 8.0.x
 
             - name: Dir Listing (Linux)
               run: ls -la
@@ -65,16 +65,16 @@ jobs:
             - name: Build
               run: dotnet build --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
-            - name: Run Unit Tests - .NET 5.0
-              run: dotnet test --framework net5.0 --results-directory test-results-net5.0 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
+            - name: Run Unit Tests - .NET 8.0
+              run: dotnet test --framework net8.0 --results-directory test-results-net8.0 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
-            - name: Publish Unit Test Results (Linux) - NET 5.0
+            - name: Publish Unit Test Results (Linux) - NET 8.0
               uses: EnricoMi/publish-unit-test-result-action@v1
               if: always() 
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  files: "test-results-net5.0/TestResults.xml"
+                  files: "test-results-net8.0/TestResults.xml"
                   check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (Ubuntu)  - NET 5.0
-                  check_name: Unit Test Results (Ubuntu)  - NET 5.0
+                  comment_title: Unit Test Statistics (Ubuntu)  - NET 8.0
+                  check_name: Unit Test Results (Ubuntu)  - NET 8.0
                   report_individual_runs: true
