@@ -194,7 +194,7 @@ namespace CenterDevice.Rest.Clients.Documents
             newVersionRequest.AlwaysMultipartFormData = true;
             newVersionRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GetMetadata(filename, filepath), "application/json"));
             DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", filepath, streamWrapper, token);
-            newVersionRequest.Timeout = int.MaxValue;
+            newVersionRequest.Timeout = new TimeSpan(0, 0, 0, 0, int.MaxValue);
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
             //-> TODO: re-activate or find workaround for following line:
             //newVersionRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
@@ -208,7 +208,7 @@ namespace CenterDevice.Rest.Clients.Documents
             newVersionRequest.AlwaysMultipartFormData = true;
             newVersionRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GetMetadata(filename, fileDataStream), "application/json"));
             DocumentStreamUtils.AddFileToUpload(newVersionRequest, "document", fileDataStream, streamWrapper, token);
-            newVersionRequest.Timeout = int.MaxValue;
+            newVersionRequest.Timeout = new TimeSpan(0, 0, 0, 0, int.MaxValue);
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
             //-> TODO: re-activate or find workaround for following line:
             //newVersionRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0

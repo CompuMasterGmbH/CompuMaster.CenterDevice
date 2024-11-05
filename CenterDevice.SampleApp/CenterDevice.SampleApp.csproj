@@ -64,10 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CompuMaster.Scopevisio.OpenApi">
-    <Version>2024.11.04.100</Version>
+      <Version>2024.11.5.100</Version>
     </PackageReference>
     <PackageReference Include="RestSharp">
-      <Version>107.3.0</Version>
+      <Version>112.1.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

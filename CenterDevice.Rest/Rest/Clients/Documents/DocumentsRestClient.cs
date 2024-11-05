@@ -134,7 +134,7 @@ namespace CenterDevice.Rest.Clients.Documents
             //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
             uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), "application/json"));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, path, streamWrapper, cancellationToken);
-            uploadRequest.Timeout = int.MaxValue;
+            uploadRequest.Timeout = new TimeSpan(0, 0, 0, 0, int.MaxValue);
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
             //-> TODO: re-activate or find workaround for following line:
             //uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0
@@ -150,7 +150,7 @@ namespace CenterDevice.Rest.Clients.Documents
             //uploadRequest.AddParameter(JsonParameter.CreateParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, path, documentDate, collectionIds, folderIds), ParameterType.RequestBody));
             uploadRequest.AddParameter(new BodyParameter(RestApiConstants.METADATA, GenerateDocumentUploadJson(filename, fileStreamData, documentDate, collectionIds, folderIds), "application/json"));
             DocumentStreamUtils.AddFileToUpload(uploadRequest, RestApiConstants.DOCUMENT, fileStreamData, streamWrapper, cancellationToken);
-            uploadRequest.Timeout = int.MaxValue;
+            uploadRequest.Timeout = new TimeSpan(0, 0, 0, 0, int.MaxValue);
             //DEACTIVATED BY JW 2022-04-05 after upgrade to RestSharp 1.07 ("ReadWriteTimeout -> Not supported", https://restsharp.dev/v107/#reference)
             //-> TODO: re-activate or find workaround for following line:
             //uploadRequest.ReadWriteTimeout = int.MaxValue; // Cannot use Timeout.Infinite here because resthsharp only uses this if > 0

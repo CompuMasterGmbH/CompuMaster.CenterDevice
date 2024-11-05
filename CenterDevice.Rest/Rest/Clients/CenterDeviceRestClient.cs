@@ -48,8 +48,16 @@ namespace CenterDevice.Rest.Clients
                 UserAgent = configuration.UserAgent
             };
             client = new RestClient(options);
+
+            //OPTIONAL: // Konfiguriert den JSON-Serializer explizit
+            //OPTIONAL: client.UseSystemTextJson(); // Verwenden Sie System.Text.Json
+            //OPTIONAL: // Alternativ: client.UseNewtonsoftJson(); // Verwenden Sie Newtonsoft.Json
+
             //remove all XML deserializers since response is always expected as JSON, never XML
-            client.UseJson();
+            //EX RestSharp till 2023: client.UseJson();
+            //NOT REQUIRED USUALLY: // Entfernen von XML-Deserialisierern (obwohl standardmäßig keine XML-Deserialisierer hinzugefügt werden)
+            //NOT REQUIRED USUALLY: client.Serializers.Clear();
+
 
             CustomOptionBaseAddress = options.BaseUrl.AbsoluteUri;
             CustomOptionUserAgent = options.UserAgent;
