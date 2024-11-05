@@ -83,7 +83,7 @@ jobs:
               run: dotnet test --framework net8.0 --results-directory test-results-net8.0 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
             - name: Run Unit Tests - .NET Framework 4.8
-              if: startsWith(matrix.os, 'ubuntu')
+              if: startsWith(matrix.os, 'windows')
               run: dotnet test --framework net48 --results-directory test-results-net48 --logger junit --configuration=${{env.BUILD_CONFIGURATION}} --no-restore
 
 #            - name: Dir Listing (Win) test-results
@@ -122,7 +122,7 @@ jobs:
 
             - name: Publish Unit Test Results (Linux) - NET Framework 4.8
               uses: EnricoMi/publish-unit-test-result-action@v2
-              if: (always() && startsWith(matrix.os, 'ubuntu'))
+              if: (always() && startsWith(matrix.os, 'windows'))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
