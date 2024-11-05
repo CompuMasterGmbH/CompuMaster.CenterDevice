@@ -120,20 +120,9 @@ jobs:
                   check_name: Unit Test Results (${{matrix.os}})  - NET 8.0
                   report_individual_runs: true
 
-            - name: Publish Unit Test Results (Linux) - NET Framework 4.8
-              uses: EnricoMi/publish-unit-test-result-action@v2
+            - name: Publish Unit Test Results (Win) - NET Framework 4.8
+              uses: EnricoMi/publish-unit-test-result-action/windows@v2
               if: (always() && startsWith(matrix.os, 'windows'))
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  files: "test-results-net48/TestResults.xml"
-                  check_run_annotations: all tests
-                  comment_title: Unit Test Statistics (${{matrix.os}}) - NET Framework 4.8
-                  check_name: Unit Test Results (${{matrix.os}}) - NET Framework 4.8
-                  report_individual_runs: true
-
-            - name: Publish Unit Test Results (Win/Mac) - NET Framework 4.8
-              uses: EnricoMi/publish-unit-test-result-action/composite@v2
-              if: (always() && startsWith(matrix.os, 'ubuntu'))
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   files: "test-results-net48/TestResults.xml"
